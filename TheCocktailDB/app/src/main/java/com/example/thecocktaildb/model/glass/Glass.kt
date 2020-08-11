@@ -1,6 +1,6 @@
-package com.example.myapplication.model.glass
+package com.example.thecocktaildb.model.glass
 
-public class Glass{
+class Glass{
 
     lateinit var strGlass: String
 

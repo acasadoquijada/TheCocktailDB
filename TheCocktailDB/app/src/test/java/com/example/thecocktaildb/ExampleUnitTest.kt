@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.thecocktaildb
 
 import org.junit.Test
 

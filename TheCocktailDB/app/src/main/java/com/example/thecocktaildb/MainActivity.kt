@@ -1,18 +1,17 @@
-package com.example.myapplication
+package com.example.thecocktaildb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.myapplication.retrofit.controllers.Controller
-import com.example.myapplication.retrofit.controllers.GlassController
+import com.example.thecocktaildb.retrofit.controllers.DrinkController
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+/*
         val controller =
-            GlassController()
+            DrinkController()
 
-        controller.start()
+        controller.start()*/
     }
 }

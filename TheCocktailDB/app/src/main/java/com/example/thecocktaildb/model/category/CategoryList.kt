@@ -1,9 +1,8 @@
-package com.example.myapplication.model.category
+package com.example.thecocktaildb.model.category
 
-import com.example.myapplication.model.category.Category
 import com.google.gson.annotations.SerializedName
 
-public class CategoryList{
+class CategoryList{
 
     @SerializedName("drinks")
     var categoryList: MutableList<Category> = mutableListOf()

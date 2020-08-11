@@ -1,8 +1,8 @@
-package com.example.myapplication.retrofit.controllers
+package com.example.thecocktaildb.retrofit.controllers
 
 import android.util.Log
-import com.example.myapplication.model.category.CategoryList
-import com.example.myapplication.retrofit.API
+import com.example.thecocktaildb.model.category.CategoryList
+import com.example.thecocktaildb.retrofit.API
 import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback

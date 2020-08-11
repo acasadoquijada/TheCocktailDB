@@ -1,4 +1,4 @@
-package com.example.myapplication.model.category
+package com.example.thecocktaildb.model.category
 
 class Category{
 
