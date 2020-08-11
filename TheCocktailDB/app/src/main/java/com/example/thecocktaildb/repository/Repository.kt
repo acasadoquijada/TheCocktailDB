@@ -1,10 +1,8 @@
 package com.example.thecocktaildb.repository
 
-import android.R.attr.apiKey
-import android.R.attr.author
 import androidx.lifecycle.MutableLiveData
 import com.example.thecocktaildb.model.drink.DrinkList
-import com.example.thecocktaildb.retrofit.controllers.DrinkController
+import com.example.thecocktaildb.retrofit.controllers.MainController
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,14 +10,13 @@ import retrofit2.Response
 
 class Repository() {
 
-    var randomDrink: MutableLiveData<DrinkList> = MutableLiveData()
+    private var randomDrink: MutableLiveData<DrinkList> = MutableLiveData()
 
-    val drinkController: DrinkController = DrinkController()
-
+    private val mainController: MainController = MainController()
 
     fun getRandomCocktail(): MutableLiveData<DrinkList> {
 
-        drinkController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
+        mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
 
             override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                 if(response.isSuccessful){
