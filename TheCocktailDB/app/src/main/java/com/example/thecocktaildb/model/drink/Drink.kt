@@ -1,119 +1,196 @@
 package com.example.thecocktaildb.model.drink
 
+import com.example.thecocktaildb.model.Ingredient
 import com.google.gson.annotations.SerializedName
 
 class Drink{
 
     @SerializedName("idDrink")
-    private var id: Long = 0
+    var id: Long = 0
 
     @SerializedName("strDrink")
-    private  var name: String = ""
+    var name: String = ""
 
     @SerializedName("strCategory")
-    private  var category: String = ""
+    var category: String = ""
 
     @SerializedName("strAlcoholic")
-    private  var alcoholic: String = ""
+    var alcoholic: String = ""
+
+    @SerializedName("strGlass")
+    var glass: String = ""
 
     @SerializedName("strInstructions")
-    private  var instruction: String = ""
+    var instruction: String = ""
 
     @SerializedName("strDrinkThumb")
-    private  var image: String = ""
+    var image: String = ""
 
     @SerializedName("strIngredient1")
-    private var ingredient1: String = ""
+    var ingredient1: String = ""
 
     @SerializedName("strIngredient2")
-    private var ingredient2: String = ""
+    var ingredient2: String = ""
 
     @SerializedName("strIngredient3")
-    private var ingredient3: String = ""
+    var ingredient3: String = ""
 
     @SerializedName("strIngredient4")
-    private var ingredient4: String = ""
+    var ingredient4: String = ""
 
     @SerializedName("strIngredient5")
-    private var ingredient5: String = ""
+    var ingredient5: String = ""
 
     @SerializedName("strIngredient6")
-    private var ingredient6: String = ""
+    var ingredient6: String = ""
 
     @SerializedName("strIngredient7")
-    private var ingredient7: String = ""
+    var ingredient7: String = ""
 
     @SerializedName("strIngredient8")
-    private var ingredient8: String = ""
+    var ingredient8: String = ""
 
     @SerializedName("strIngredient9")
-    private var ingredient9: String = ""
+    var ingredient9: String = ""
 
     @SerializedName("strIngredient10")
-    private var ingredient10: String = ""
+    var ingredient10: String = ""
 
     @SerializedName("strIngredient11")
-    private var ingredient11: String = ""
+    var ingredient11: String = ""
 
     @SerializedName("strIngredient12")
-    private var ingredient12: String = ""
+    var ingredient12: String = ""
 
     @SerializedName("strIngredient13")
-    private var ingredient13: String = ""
+    var ingredient13: String = ""
 
     @SerializedName("strIngredient14")
-    private var ingredient14: String = ""
+    var ingredient14: String = ""
 
     @SerializedName("strIngredient15")
-    private var ingredient15: String = ""
+    var ingredient15: String = ""
 
     @SerializedName("strMeasure1")
-    private var measure1: String = ""
+    var measure1: String = ""
 
     @SerializedName("strMeasure2")
-    private var measure2: String = ""
+    var measure2: String = ""
 
     @SerializedName("strMeasure3")
-    private var measure3: String = ""
+    var measure3: String = ""
 
     @SerializedName("strMeasure4")
-    private var measure4: String = ""
+    var measure4: String = ""
 
     @SerializedName("strMeasure5")
-    private var measure5: String = ""
+    var measure5: String = ""
 
     @SerializedName("strMeasure6")
-    private var measure6: String = ""
+    var measure6: String = ""
 
     @SerializedName("strMeasure7")
-    private var measure7: String = ""
+    var measure7: String = ""
 
     @SerializedName("strMeasure8")
-    private var measure8: String = ""
+    var measure8: String = ""
 
     @SerializedName("strMeasure9")
-    private var measure9: String = ""
+    var measure9: String = ""
 
     @SerializedName("strMeasure10")
-    private var measure10: String = ""
+    var measure10: String = ""
 
     @SerializedName("strMeasure11")
-    private var measure11: String = ""
+    var measure11: String = ""
 
     @SerializedName("strMeasure12")
-    private var measure12: String = ""
+    var measure12: String = ""
 
     @SerializedName("strMeasure13")
-    private var measure13: String = ""
+    var measure13: String = ""
 
     @SerializedName("strMeasure14")
-    private var measure14: String = ""
+    var measure14: String = ""
 
     @SerializedName("strMeasure15")
-    private var measure15: String = ""
+    var measure15: String = ""
 
 
     override fun toString(): String {
-        return "$id $name $category $alcoholic $instruction $image $ingredient1 $ingredient2 $measure1 $measure2"
+       // return "$id $name $category $alcoholic $instruction $image $ingredient1 $ingredient2 $measure1 $measure2"
+
+        if(ingredient15 == null){
+            return "THIS IS NULL"
+        }
+        return "$ingredient15"
+    }
+
+
+    fun getIngredients() : MutableList<Ingredient>{
+
+        val ingredientList: MutableList<Ingredient> = mutableListOf()
+
+        ingredient1?.let {
+            ingredientList.add(Ingredient(ingredient1,measure1))
+        }
+
+        ingredient2?.let {
+            ingredientList.add(Ingredient(ingredient2,measure2))
+        }
+
+        ingredient3?.let {
+            ingredientList.add(Ingredient(ingredient3,measure3))
+        }
+
+        ingredient4?.let {
+            ingredientList.add(Ingredient(ingredient4,measure4))
+        }
+
+        ingredient5?.let {
+            ingredientList.add(Ingredient(ingredient5,measure5))
+
+        }
+
+        ingredient6?.let {
+            ingredientList.add(Ingredient(ingredient6,measure6))
+        }
+
+        ingredient7?.let {
+            ingredientList.add(Ingredient(ingredient7,measure7))
+        }
+
+        ingredient8?.let {
+            ingredientList.add(Ingredient(ingredient8,measure8))
+        }
+
+        ingredient9?.let {
+            ingredientList.add(Ingredient(ingredient9,measure9))
+        }
+
+        ingredient10?.let {
+            ingredientList.add(Ingredient(ingredient10,measure10))
+        }
+
+        ingredient11?.let {
+            ingredientList.add(Ingredient(ingredient11,measure11))
+        }
+
+        ingredient12?.let {
+            ingredientList.add(Ingredient(ingredient12,measure12))
+        }
+
+        ingredient13?.let {
+            ingredientList.add(Ingredient(ingredient13,measure13))
+        }
+        ingredient14?.let {
+            ingredientList.add(Ingredient(ingredient14,measure14))
+        }
+
+        ingredient15?.let {
+            ingredientList.add(Ingredient(ingredient15,measure15))
+        }
+
+        return ingredientList
     }
 }

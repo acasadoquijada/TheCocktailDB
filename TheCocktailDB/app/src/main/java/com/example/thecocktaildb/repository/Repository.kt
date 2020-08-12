@@ -14,21 +14,23 @@ class Repository() {
 
     private val mainController: MainController = MainController()
 
-    fun getRandomCocktail(): MutableLiveData<DrinkList> {
+    fun getRandomCocktail(new:Boolean): MutableLiveData<DrinkList> {
 
-        mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
+        if(new || randomDrink.value == null){
+            mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
 
-            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                if(response.isSuccessful){
-                    randomDrink.postValue(response.body())
+                override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+                    if(response.isSuccessful){
+                        randomDrink.postValue(response.body())
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                val drinkList = DrinkList()
-                randomDrink.postValue(drinkList)
-            }
-        })
+                override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+                    val drinkList = DrinkList()
+                    randomDrink.postValue(drinkList)
+                }
+            })
+        }
 
         return randomDrink
     }
