@@ -1,5 +1,6 @@
 package com.example.thecocktaildb.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,12 +22,17 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
     }
 
     override fun getItemCount(): Int {
-
-        ingredientList?.let { return ingredientList.size }
+        return ingredientList.size
     }
 
     override fun onBindViewHolder(holder: IngredientHolder, position: Int) {
-        holder.bind(ingredientList[position].name, ingredientList[position].measure)
+
+        ingredientList[position].name?.let {
+            ingredientList[position].measure?.let { it1 ->
+            holder.bind(it,
+                it1
+            )
+        } }
     }
 
 

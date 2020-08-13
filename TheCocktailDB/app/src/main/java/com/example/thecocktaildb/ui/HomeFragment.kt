@@ -1,9 +1,8 @@
 package com.example.thecocktaildb.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -68,7 +67,6 @@ class HomeFragment : Fragment() {
         getRecyclerView().adapter = adapter
     }
 
-
     private fun getRecyclerView(): RecyclerView {
         return mBinding.ingredientRecyclerView
     }
@@ -77,23 +75,43 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        mBinding.fab.setOnClickListener { viewModel.getRandomCocktail(true) }
-
-        viewModel.getRandomCocktail(false).observe(viewLifecycleOwner, Observer { drinkList ->
+        viewModel.getRandomCocktail().observe(viewLifecycleOwner, Observer { drinkList ->
             for (drink in drinkList.drinkList) {
-
 
                 mBinding.cocktailTitle.text = drink.name
 
                 Picasso.get().load(drink.image).into(mBinding.cocktailImage)
 
+                Log.d("TESTING", "ingredient size in FRAGMENT ${drink.getIngredients().size}")
                 adapter.ingredientList = drink.getIngredients()
 
                 mBinding.typeAndGlass.text = drink.category + " - " +  drink.glass
 
-                mBinding.instructions.text = drink.instruction
+                mBinding.instructions.text = drink.getParsedInstruction()
 
             }
         })
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.random_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemClicked = item.itemId
+
+        if(itemClicked == R.id.action_random){
+            viewModel.getRandomCocktail(newCocktail = true)
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -9,8 +9,7 @@ class HomeViewModel : ViewModel() {
 
     var repository: Repository = Repository()
 
-    fun getRandomCocktail(new: Boolean): MutableLiveData<DrinkList>{
-        return repository.getRandomCocktail(new)
+    fun getRandomCocktail(newCocktail: Boolean = false): MutableLiveData<DrinkList>{
+        return repository.getRandomCocktail(newCocktail)
     }
-
 }
