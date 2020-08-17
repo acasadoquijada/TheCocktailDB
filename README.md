@@ -6,3 +6,7 @@ The purpose of this application is to learn about [Retrofit](https://square.gith
 ### Logos
 
 * Dice logo from: <div>Icons made by <a href="https://www.flaticon.com/free-icon/dices_2927933?term=dice&page=1&position=14" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+* Cocktail logo from: <div>Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+* List logo from: <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

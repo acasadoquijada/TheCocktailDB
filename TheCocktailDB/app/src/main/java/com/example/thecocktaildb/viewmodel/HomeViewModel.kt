@@ -12,4 +12,8 @@ class HomeViewModel : ViewModel() {
     fun getRandomCocktail(newCocktail: Boolean = false): MutableLiveData<DrinkList>{
         return repository.getRandomCocktail(newCocktail)
     }
+
+    fun getAlcoholicDrinks(): MutableLiveData<DrinkList>{
+        return repository.getAlcoholicDrinks()
+    }
 }

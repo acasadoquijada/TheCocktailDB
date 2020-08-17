@@ -8,5 +8,13 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_random">
     </item>
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share"
+        android:title="">
+    </item>
+
 
 </menu>

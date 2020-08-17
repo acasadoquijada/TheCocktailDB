@@ -11,7 +11,6 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
 
     var ingredientList: List<Ingredient> = ArrayList()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientHolder {
 
         val inflater = LayoutInflater.from(parent.context)
@@ -23,6 +22,11 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
 
     override fun getItemCount(): Int {
         return ingredientList.size
+    }
+
+    fun setIngredients(ingredientList: List<Ingredient>){
+        this.ingredientList = ingredientList
+        this.notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: IngredientHolder, position: Int) {

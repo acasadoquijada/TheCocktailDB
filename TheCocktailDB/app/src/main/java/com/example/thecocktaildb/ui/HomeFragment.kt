@@ -82,8 +82,7 @@ class HomeFragment : Fragment() {
 
                 Picasso.get().load(drink.image).into(mBinding.cocktailImage)
 
-                Log.d("TESTING", "ingredient size in FRAGMENT ${drink.getIngredients().size}")
-                adapter.ingredientList = drink.getIngredients()
+                adapter.setIngredients(drink.getIngredients())
 
                 mBinding.typeAndGlass.text = drink.category + " - " +  drink.glass
 
@@ -105,13 +104,23 @@ class HomeFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemClicked = item.itemId
 
-        if(itemClicked == R.id.action_random){
-            viewModel.getRandomCocktail(newCocktail = true)
-            return true;
+        when(item.itemId){
+            R.id.action_random -> getRandomCocktail()
+            R.id.action_share -> shareCocktail()
+
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun getRandomCocktail(): Boolean{
+        viewModel.getRandomCocktail(newCocktail = true)
+        return true
+    }
+
+    private fun shareCocktail(): Boolean{
+        Toast.makeText(requireContext(),"TESTING",Toast.LENGTH_SHORT).show()
+        return true
     }
 }

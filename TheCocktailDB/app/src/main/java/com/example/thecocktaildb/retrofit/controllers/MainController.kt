@@ -36,4 +36,8 @@ class MainController {
         return api.getRandomCocktail()
     }
 
+    fun getAlcoholicDrinksCall():Call<DrinkList>{
+        return api.getAlcoholicDrinks()
+    }
+
 }

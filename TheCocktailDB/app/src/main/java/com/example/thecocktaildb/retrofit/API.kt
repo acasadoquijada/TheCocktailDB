@@ -17,4 +17,7 @@ public interface API{
     @GET("list.php?g=list")
     fun getGlasses(): Call<GlassList>
 
+    @GET("filter.php?a=Alcoholic")
+    fun getAlcoholicDrinks(): Call<DrinkList>
+
 }
