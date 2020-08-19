@@ -1,5 +1,6 @@
 package com.example.thecocktaildb.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.thecocktaildb.model.drink.DrinkList
 import com.example.thecocktaildb.retrofit.controllers.MainController
@@ -37,8 +38,19 @@ class Repository() {
         return randomDrink
     }
 
-    fun getAlcoholicDrinks() : MutableLiveData<DrinkList>{
-        mainController.getAlcoholicDrinksCall().enqueue(object: Callback<DrinkList?>{
+    fun getDrinkList(query: String) : MutableLiveData<DrinkList>{
+
+        val callback: Call<DrinkList> = when(query){
+            "alcohol" -> mainController.getAlcoholicDrinksCall()
+            "no alcohol" -> mainController.getNonAlcoholicDrinks()
+            "ordinary drink" -> mainController.getOrdinaryDrinks()
+            "cocktail" -> mainController.getCocktailsDrinks()
+            "cocktail glass" -> mainController.getCocktailGlassDrinks()
+            "champagne flute" -> mainController.getChampagneFluteDrinks()
+            else ->  throw IllegalArgumentException("Value $query is incorrect")
+        }
+
+        callback.enqueue(object: Callback<DrinkList?>{
             override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                 if(response.isSuccessful){
                     alcoholicDrinkList.postValue(response.body())
@@ -54,5 +66,6 @@ class Repository() {
 
         return alcoholicDrinkList
     }
+
 
 }

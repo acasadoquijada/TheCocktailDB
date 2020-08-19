@@ -20,4 +20,18 @@ public interface API{
     @GET("filter.php?a=Alcoholic")
     fun getAlcoholicDrinks(): Call<DrinkList>
 
+    @GET("filter.php?a=Non_Alcoholic")
+    fun getNonAlcoholicDrinks(): Call<DrinkList>
+
+    @GET("filter.php?c=Ordinary_Drink")
+    fun getOrdinaryDrinks(): Call<DrinkList>
+
+    @GET("filter.php?c=Cocktail")
+    fun getCocktailsDrinks(): Call<DrinkList>
+
+    @GET("filter.php?g=Cocktail_glass")
+    fun getCocktailGlassDrinks(): Call<DrinkList>
+
+    @GET("filter.php?g=Champagne_flute")
+    fun getChampagneFluteDrinks(): Call<DrinkList>
 }

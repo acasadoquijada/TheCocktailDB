@@ -7,13 +7,13 @@ import com.example.thecocktaildb.repository.Repository
 
 class HomeViewModel : ViewModel() {
 
-    var repository: Repository = Repository()
+    private var repository: Repository = Repository()
 
     fun getRandomCocktail(newCocktail: Boolean = false): MutableLiveData<DrinkList>{
         return repository.getRandomCocktail(newCocktail)
     }
 
-    fun getAlcoholicDrinks(): MutableLiveData<DrinkList>{
-        return repository.getAlcoholicDrinks()
+    fun getDrinkList(query: String): MutableLiveData<DrinkList>{
+        return repository.getDrinkList(query)
     }
 }

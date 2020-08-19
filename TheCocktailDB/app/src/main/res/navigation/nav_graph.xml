@@ -22,5 +22,9 @@
     <fragment
         android:id="@+id/drinkListFragment"
         android:name="com.example.thecocktaildb.ui.DrinkListFragment"
-        android:label="DrinkListFragment" />
+        android:label="DrinkListFragment" >
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
 </navigation>

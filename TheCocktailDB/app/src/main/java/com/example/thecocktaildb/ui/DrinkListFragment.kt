@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.DrinkListFragmentBinding
+import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.viewmodel.HomeViewModel
 
-class DrinkListFragment : Fragment(){
+class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
+
     lateinit var mBinding : DrinkListFragmentBinding
     lateinit var viewModel: HomeViewModel
     lateinit var adapter: DrinkAdapter
+    lateinit var query: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +55,7 @@ class DrinkListFragment : Fragment(){
     }
 
     private fun createAdapter(){
-        adapter = DrinkAdapter()
+        adapter = DrinkAdapter(this)
     }
 
     private fun setAdapter(){
@@ -71,13 +75,41 @@ class DrinkListFragment : Fragment(){
         return mBinding.root
     }
 
+
+    private fun getQuery() {
+        arguments?.let {
+            query =  DrinkListFragmentArgs.fromBundle(requireArguments()).query
+        }
+    }
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        getQuery()
+        setupViewModel()
+    }
 
-        viewModel.getAlcoholicDrinks().observe(viewLifecycleOwner, Observer { drinkList ->
-            adapter.setDrinks(drinkList.drinkList)
-            }
-        )
+    private fun setupViewModel(){
+        getViewModel()
+        observeDrinks()
+    }
+
+    private fun getViewModel(){
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+    }
+
+    private fun observeDrinks(){
+        viewModel.getDrinkList(query).observe(viewLifecycleOwner, Observer { drinkList ->
+            setDrinks(drinkList.drinkList)
+        })
+    }
+
+    private fun setDrinks(drinkList: List<Drink>){
+        adapter.setDrinks(drinkList)
+
+    }
+
+    override fun onItemClick(clickedItem: Int) {
+        Toast.makeText(requireContext(),"$clickedItem", Toast.LENGTH_SHORT).show()
     }
 }

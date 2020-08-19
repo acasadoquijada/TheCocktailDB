@@ -15,12 +15,14 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.databinding.FragmentCategoriesBinding
 import com.example.thecocktaildb.viewmodel.HomeViewModel
+import kotlinx.android.synthetic.main.category_card_view.view.*
 
 
 class CategoriesFragment : Fragment() {
 
-    lateinit var mBinding : FragmentCategoriesBinding
-    lateinit var viewModel: HomeViewModel
+    private lateinit var mBinding : FragmentCategoriesBinding
+    private lateinit var viewModel: HomeViewModel
+    private var categoryInformation: MutableList<Pair<View,String>> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +30,9 @@ class CategoriesFragment : Fragment() {
     ): View? {
 
         setupDatabinding(inflater, container)
-        setupCategories()
+      //  setupCategories()
+        setupCategoryInformation()
+        setCategoryName()
         return getRootView()
     }
 
@@ -40,34 +44,36 @@ class CategoriesFragment : Fragment() {
         return mBinding.root
     }
 
-    private fun setupCategories(){
-        mBinding.alcohol.categoryName.text = "Alcohol"
-        mBinding.nonAlcohol.categoryName.text = "No alcohol"
-        mBinding.ordinaryDrink.categoryName.text = "Ordinary drink"
-        mBinding.cocktail.categoryName.text = "Cocktail"
-        mBinding.cocktailGlass.categoryName.text = "CocktailGlass"
-        mBinding.champagneFlute.categoryName.text = "Champagne flute"
-    }
-
-    private fun navigateToDrinkListFragment(){
+    private fun navigateToDrinkListFragment(query: String){
         val action =
-        CategoriesFragmentDirections.actionCategoriesFragmentToDrinkListFragment()
+        CategoriesFragmentDirections.actionCategoriesFragmentToDrinkListFragment(query)
 
         NavHostFragment.findNavController(this).navigate(action)
     }
 
-    private fun observeAlcoholicDrinks(){
-        mBinding.alcohol.root.setOnClickListener {
-            navigateToDrinkListFragment()
-        }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        observeAlcoholicDrinks()
 
     }
 
+    private fun setupCategoryInformation(){
+        categoryInformation.add(Pair(mBinding.alcohol.root, getString(R.string.category_alcohol)))
+        categoryInformation.add(Pair(mBinding.nonAlcohol.root, getString(R.string.category_no_alcohol)))
+        categoryInformation.add(Pair(mBinding.ordinaryDrink.root, getString(R.string.category_ordinary_drink)))
+        categoryInformation.add(Pair(mBinding.cocktail.root, getString(R.string.category_cocktail)))
+        categoryInformation.add(Pair(mBinding.cocktailGlass.root, getString(R.string.category_cocktail_glass)))
+        categoryInformation.add(Pair(mBinding.champagneFlute.root, getString(R.string.category_champagne_flute)))
+    }
 
+    private fun setCategoryName(){
+
+        for (par: Pair<View,String> in categoryInformation){
+            par.first.categoryName.text = par.second
+            par.first.setOnClickListener{
+                navigateToDrinkListFragment(par.second)
+            }
+        }
+    }
 }

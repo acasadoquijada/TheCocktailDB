@@ -1,5 +1,6 @@
 package com.example.thecocktaildb.retrofit.controllers
 
+import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
 import com.example.thecocktaildb.retrofit.API
 import com.google.gson.Gson
@@ -39,5 +40,27 @@ class MainController {
     fun getAlcoholicDrinksCall():Call<DrinkList>{
         return api.getAlcoholicDrinks()
     }
+
+    fun getNonAlcoholicDrinks(): Call<DrinkList>{
+        return api.getNonAlcoholicDrinks()
+    }
+
+    fun getCocktailsDrinks(): Call<DrinkList>{
+        return api.getCocktailsDrinks()
+    }
+
+    fun getOrdinaryDrinks(): Call<DrinkList>{
+        return api.getOrdinaryDrinks()
+    }
+
+    fun getCocktailGlassDrinks(): Call<DrinkList>{
+        return api.getCocktailGlassDrinks()
+    }
+
+    fun getChampagneFluteDrinks(): Call<DrinkList>{
+        return api.getChampagneFluteDrinks()
+    }
+
+
 
 }

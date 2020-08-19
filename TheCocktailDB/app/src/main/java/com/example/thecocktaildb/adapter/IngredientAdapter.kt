@@ -2,6 +2,7 @@ package com.example.thecocktaildb.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.databinding.IngredientBinding
@@ -9,7 +10,7 @@ import com.example.thecocktaildb.model.Ingredient
 
 class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder>() {
 
-    var ingredientList: List<Ingredient> = ArrayList()
+    private var ingredientList: List<Ingredient> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientHolder {
 
@@ -40,7 +41,7 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
     }
 
 
-    class IngredientHolder(binding: IngredientBinding):RecyclerView.ViewHolder(binding.root){
+    inner class IngredientHolder(binding: IngredientBinding):RecyclerView.ViewHolder(binding.root){
 
        private val binding:IngredientBinding
 
@@ -52,7 +53,6 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
             binding.name.text = name
             binding.measure.text = measure
         }
-
     }
 
 
