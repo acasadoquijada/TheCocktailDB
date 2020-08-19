@@ -14,5 +14,13 @@
         android:id="@+id/categoriesFragment"
         android:name="com.example.thecocktaildb.ui.CategoriesFragment"
         android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories" />
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_drinkListFragment"
+            app:destination="@id/drinkListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drinkListFragment"
+        android:name="com.example.thecocktaildb.ui.DrinkListFragment"
+        android:label="DrinkListFragment" />
 </navigation>

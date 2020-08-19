@@ -1,20 +1,20 @@
 package com.example.thecocktaildb.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-
+import androidx.navigation.NavDirections
+import androidx.navigation.NavHost
+import androidx.navigation.fragment.NavHostFragment
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.databinding.FragmentCategoriesBinding
 import com.example.thecocktaildb.viewmodel.HomeViewModel
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_categories.view.*
 
 
 class CategoriesFragment : Fragment() {
@@ -49,15 +49,24 @@ class CategoriesFragment : Fragment() {
         mBinding.champagneFlute.categoryName.text = "Champagne flute"
     }
 
+    private fun navigateToDrinkListFragment(){
+        val action =
+        CategoriesFragmentDirections.actionCategoriesFragmentToDrinkListFragment()
+
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
+    private fun observeAlcoholicDrinks(){
+        mBinding.alcohol.root.setOnClickListener {
+            navigateToDrinkListFragment()
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        observeAlcoholicDrinks()
 
-        viewModel.getAlcoholicDrinks().observe(viewLifecycleOwner, Observer { drinkList ->
-            for (drink in drinkList.drinkList) {
-                Toast.makeText(requireContext(),"" + drink.id,Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
 

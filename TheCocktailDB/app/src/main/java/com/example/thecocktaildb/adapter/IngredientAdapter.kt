@@ -42,7 +42,7 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
 
     class IngredientHolder(binding: IngredientBinding):RecyclerView.ViewHolder(binding.root){
 
-        val binding:IngredientBinding
+       private val binding:IngredientBinding
 
         init{
             this.binding = binding
