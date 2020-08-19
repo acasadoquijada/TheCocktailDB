@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.R
@@ -109,7 +110,16 @@ class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
 
     }
 
+    private fun navigateToDrinkFragment(drinkId: Long){
+        val action =
+            DrinkListFragmentDirections.actionDrinkListFragmentToHomeFragment(drinkId)
+
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
+
     override fun onItemClick(clickedItem: Int) {
-        Toast.makeText(requireContext(),"$clickedItem", Toast.LENGTH_SHORT).show()
+        navigateToDrinkFragment(viewModel.getDrinkId(clickedItem))
+       // Toast.makeText(requireContext(),"$clickedItem", Toast.LENGTH_SHORT).show()
     }
 }

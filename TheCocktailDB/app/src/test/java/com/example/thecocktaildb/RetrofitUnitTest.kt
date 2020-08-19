@@ -1,8 +1,10 @@
 package com.example.thecocktaildb
 
+import android.util.Log
 import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
 import com.example.thecocktaildb.retrofit.controllers.MainController
+import junit.framework.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +26,6 @@ class RetrofitUnitTest{
     }
 
 
-    @Test
     fun getRandomDrink(){
         try {
 
@@ -41,7 +42,6 @@ class RetrofitUnitTest{
         }
     }
 
-    @Test
     fun getAlcoholicDrinks(){
         try {
 
@@ -59,6 +59,34 @@ class RetrofitUnitTest{
             e.printStackTrace();
         }
     }
+/*
+    fun getDrink(){
+        try {
+
+            val response: Response<DrinkList> = mainController.getDrink(10).execute()
+
+            val a =  response.raw().request().url().toString()
+
+            val drinkList = response.body()
+
+
+
+            //response.raw().request().url())
+
+            val b = a + "adads"
+
+
+            if (drinkList != null) {
+                for(drink: Drink in drinkList.drinkList){
+                    assert(!drink.name.equals(""))
+                }
+            }
+
+        } catch (e:IOException) {
+            e.printStackTrace();
+        }
+    }*/
+
 
 
 }

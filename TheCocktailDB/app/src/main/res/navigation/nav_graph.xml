@@ -7,9 +7,14 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.thecocktaildb.ui.HomeFragment"
+        android:name="com.example.thecocktaildb.ui.DrinkFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" />
+        tools:layout="@layout/drink_fragment" >
+        <argument
+            android:name="drinkId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
     <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.example.thecocktaildb.ui.CategoriesFragment"
@@ -26,5 +31,8 @@
         <argument
             android:name="query"
             app:argType="string" />
+        <action
+            android:id="@+id/action_drinkListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

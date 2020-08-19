@@ -1,7 +1,6 @@
 package com.example.thecocktaildb.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -12,18 +11,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.IngredientAdapter
-import com.example.thecocktaildb.databinding.HomeFragmentBinding
+import com.example.thecocktaildb.databinding.DrinkFragmentBinding
 import com.example.thecocktaildb.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
 
-class HomeFragment : Fragment() {
+class DrinkFragment : Fragment() {
 
     companion object {
-        fun newInstance() = HomeFragment()
+        fun newInstance() = DrinkFragment()
     }
 
     private lateinit var viewModel: HomeViewModel
-    private lateinit var mBinding: HomeFragmentBinding
+    private lateinit var mBinding: DrinkFragmentBinding
+    private var drinkId: Long = -1
 
     private lateinit var adapter: IngredientAdapter
 
@@ -32,10 +32,22 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.home_fragment,container,false)
+        // Check if I have arguments
 
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.drink_fragment,container,false)
+        getDrinkId()
         setupRecyclerView()
         return mBinding.root
+    }
+
+
+    private fun getDrinkId() {
+
+        arguments?.let {
+            drinkId =  DrinkFragmentArgs.fromBundle(requireArguments()).drinkId
+        }
+
+
     }
 
     private fun setupRecyclerView(){
@@ -75,7 +87,11 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        viewModel.getRandomCocktail().observe(viewLifecycleOwner, Observer { drinkList ->
+        // getCocktail two arguments, getNewRandom = true/false (default true)
+        // id, if id == -1 return random, else return actual value
+
+
+        viewModel.getDrink(drinkId = drinkId).observe(viewLifecycleOwner, Observer { drinkList ->
             for (drink in drinkList.drinkList) {
 
                 mBinding.cocktailTitle.text = drink.name
@@ -115,7 +131,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getRandomCocktail(): Boolean{
-        viewModel.getRandomCocktail(newCocktail = true)
+        viewModel.getDrink(newCocktail = true)
         return true
     }
 

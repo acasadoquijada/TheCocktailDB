@@ -13,9 +13,18 @@ class Repository() {
 
     private var randomDrink: MutableLiveData<DrinkList> = MutableLiveData()
 
-    private var alcoholicDrinkList: MutableLiveData<DrinkList> = MutableLiveData()
+    private var drinkList: MutableLiveData<DrinkList> = MutableLiveData()
 
     private val mainController: MainController = MainController()
+
+    fun getDrinkPosition(position: Int): Long{
+
+        drinkList.value?.drinkList?.get(position)?.let {
+            return it.id
+        }
+
+        return -1
+    }
 
     fun getRandomCocktail(new:Boolean): MutableLiveData<DrinkList> {
 
@@ -53,18 +62,41 @@ class Repository() {
         callback.enqueue(object: Callback<DrinkList?>{
             override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                 if(response.isSuccessful){
-                    alcoholicDrinkList.postValue(response.body())
+                    drinkList.postValue(response.body())
                 }
             }
 
             override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
                 val drinkList = DrinkList()
-                alcoholicDrinkList.postValue(drinkList)
+                this@Repository.drinkList.postValue(drinkList)
             }
 
         })
 
-        return alcoholicDrinkList
+        return drinkList
+    }
+
+    fun getDrink(id: Long): MutableLiveData<DrinkList>{
+
+            mainController.getDrink(id).enqueue(object : Callback<DrinkList?> {
+
+                override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+
+                    Log.d("TESTING__", "URL: " + response.raw().request().url())
+
+                    if(response.isSuccessful){
+                        randomDrink.postValue(response.body())
+                    }
+                }
+
+                override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+                    t.printStackTrace()
+                    val drinkList = DrinkList()
+                    randomDrink.postValue(drinkList)
+                }
+            })
+
+        return randomDrink
     }
 
 

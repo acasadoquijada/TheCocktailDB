@@ -9,11 +9,22 @@ class HomeViewModel : ViewModel() {
 
     private var repository: Repository = Repository()
 
-    fun getRandomCocktail(newCocktail: Boolean = false): MutableLiveData<DrinkList>{
+    fun getDrinkList(query: String): MutableLiveData<DrinkList>{
+        return repository.getDrinkList(query)
+    }
+
+    fun getDrink(newCocktail: Boolean = false, drinkId: Long = -1): MutableLiveData<DrinkList>{
+
+        val test: Long = -1    // This is a placeholder. Needs to be changed
+
+        if(drinkId != test){
+            return repository.getDrink(drinkId)
+        }
+
         return repository.getRandomCocktail(newCocktail)
     }
 
-    fun getDrinkList(query: String): MutableLiveData<DrinkList>{
-        return repository.getDrinkList(query)
+    fun getDrinkId(position: Int): Long{
+        return repository.getDrinkPosition(position)
     }
 }

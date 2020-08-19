@@ -61,6 +61,10 @@ class MainController {
         return api.getChampagneFluteDrinks()
     }
 
+    fun getDrink(id: Long): Call<DrinkList>{
+        return api.getDrink(id)
+    }
+
 
 
 }
