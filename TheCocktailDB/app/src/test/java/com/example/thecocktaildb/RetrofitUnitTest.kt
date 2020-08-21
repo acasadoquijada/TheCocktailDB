@@ -21,22 +21,43 @@ class RetrofitUnitTest{
         mainController = MainController()
     }
 
-    private fun assertDrinkIsNotEmpty(drinkList: DrinkList?, size: Int? = drinkList?.drinkList?.size){
+
+    private fun assertDrinkInCategoryIsNotEmpty(drinkList: DrinkList?, size: Int? = drinkList?.list?.size){
 
         size?.let {
-            for(i in 0 until size){
-                assert(!drinkList?.drinkList?.get(i)?.name.equals(""))
+            for (i in 0 until size) {
+                assert(drinkList?.list?.get(i)?.id != 0L)
+                assert(!drinkList?.list?.get(i)?.name.equals(""))
+                assert(!drinkList?.list?.get(i)?.image.equals(""))
             }
         }
     }
 
+    private fun assertDrinkIsNotEmpty(drinkList: DrinkList?){
+        assert(drinkList?.list?.get(0)?.id != 0L)
+        assert(!drinkList?.list?.get(0)?.name.equals(""))
+        assert(!drinkList?.list?.get(0)?.instruction.equals(""))
+        assert(!drinkList?.list?.get(0)?.glass.equals(""))
+        assert(!drinkList?.list?.get(0)?.category.equals(""))
+        assert(!drinkList?.list?.get(0)?.image.equals(""))
+        drinkList?.list?.get(0)?.getIngredients()?.isNotEmpty()?.let { assert(it) }
 
+    }
+
+    // We ensure that the call is correct (url exists and we retrieve a JSON object)
     private fun assertResponseIsTrue(response: Response<DrinkList>){
         assert(response.isSuccessful)
     }
 
+    // In this case we know the name of the drink beforehand
     private fun assertNameIsCorrect(drinkList: DrinkList?){
-        assert(drinkList?.drinkList?.get(0)?.name.equals("Margarita"))
+        assert(drinkList?.list?.get(0)?.name.equals("Margarita"))
+        assert(drinkList?.list?.get(0)?.id != 0L)
+        assert(!drinkList?.list?.get(0)?.instruction.equals(""))
+        assert(!drinkList?.list?.get(0)?.glass.equals(""))
+        assert(!drinkList?.list?.get(0)?.category.equals(""))
+        assert(!drinkList?.list?.get(0)?.image.equals(""))
+        drinkList?.list?.get(0)?.getIngredients()?.isNotEmpty()?.let { assert(it) }
     }
 
     private fun failTest(e: IOException){
@@ -54,7 +75,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList,1) // The response of getRandomDrinkCall returns a list with only one drink
+            assertDrinkIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
@@ -71,7 +92,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList)
+            assertDrinkInCategoryIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
@@ -88,7 +109,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList)
+            assertDrinkInCategoryIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
@@ -105,7 +126,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList)
+            assertDrinkInCategoryIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
@@ -122,7 +143,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList)
+            assertDrinkInCategoryIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
@@ -139,7 +160,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList)
+            assertDrinkInCategoryIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
@@ -156,7 +177,7 @@ class RetrofitUnitTest{
 
             val drinkList = response.body()
 
-            assertDrinkIsNotEmpty(drinkList)
+            assertDrinkInCategoryIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)

@@ -1,6 +1,5 @@
 package com.example.thecocktaildb.model.drink
 
-import android.util.Log
 import com.example.thecocktaildb.model.Ingredient
 import com.google.gson.annotations.SerializedName
 
@@ -116,16 +115,6 @@ class Drink{
 
     @SerializedName("strMeasure15")
     var measure15: String? = ""
-
-
-    override fun toString(): String {
-       // return "$id $name $category $alcoholic $instruction $image $ingredient1 $ingredient2 $measure1 $measure2"
-
-        if(ingredient15 == null){
-            return "THIS IS NULL"
-        }
-        return "$ingredient15"
-    }
 
     fun getIngredients() : MutableList<Ingredient>{
 

@@ -2,6 +2,7 @@ package com.example.thecocktaildb.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
 import com.example.thecocktaildb.retrofit.controllers.MainController
 import retrofit2.Call
@@ -11,35 +12,33 @@ import retrofit2.Response
 
 class Repository() {
 
-    private var randomDrink: MutableLiveData<DrinkList> = MutableLiveData()
+    private lateinit var randomDrink: MutableLiveData<Drink>
 
-    private var drinkList: MutableLiveData<DrinkList> = MutableLiveData()
+    private var drinkList: MutableLiveData<List<Drink>> = MutableLiveData()
 
     private val mainController: MainController = MainController()
 
     fun getDrinkPosition(position: Int): Long{
 
-        drinkList.value?.drinkList?.get(position)?.let {
+        drinkList.value?.get(position)?.let {
             return it.id
         }
-
         return -1
     }
 
-    fun getRandomCocktail(new:Boolean): MutableLiveData<DrinkList> {
+    fun getRandomCocktail(new:Boolean): MutableLiveData<Drink> {
 
         if(new || randomDrink.value == null){
             mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
 
                 override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                     if(response.isSuccessful){
-                        randomDrink.postValue(response.body())
+                        randomDrink.postValue(response.body()?.list?.get(0))
                     }
                 }
 
                 override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                    val drinkList = DrinkList()
-                    randomDrink.postValue(drinkList)
+                    randomDrink.postValue(Drink())
                 }
             })
         }
@@ -47,7 +46,7 @@ class Repository() {
         return randomDrink
     }
 
-    fun getDrinkList(query: String) : MutableLiveData<DrinkList>{
+    fun getDrinkList(query: String) : MutableLiveData<List<Drink>>{
 
         val callback: Call<DrinkList> = when(query){
             "alcohol" -> mainController.getAlcoholicDrinksCall()
@@ -62,13 +61,12 @@ class Repository() {
         callback.enqueue(object: Callback<DrinkList?>{
             override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                 if(response.isSuccessful){
-                    drinkList.postValue(response.body())
+                    drinkList.postValue(response.body()?.list)
                 }
             }
 
             override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                val drinkList = DrinkList()
-                this@Repository.drinkList.postValue(drinkList)
+                t.printStackTrace()
             }
 
         })
@@ -76,28 +74,21 @@ class Repository() {
         return drinkList
     }
 
-    fun getDrink(id: Long): MutableLiveData<DrinkList>{
+    fun getDrink(id: Long): MutableLiveData<Drink>{
 
             mainController.getDrink(id).enqueue(object : Callback<DrinkList?> {
 
                 override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-
-                    Log.d("TESTING__", "URL: " + response.raw().request().url())
-
                     if(response.isSuccessful){
-                        randomDrink.postValue(response.body())
+                        randomDrink.postValue(response.body()?.list?.get(0))
                     }
                 }
 
                 override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
                     t.printStackTrace()
-                    val drinkList = DrinkList()
-                    randomDrink.postValue(drinkList)
                 }
             })
 
         return randomDrink
     }
-
-
 }

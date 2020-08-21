@@ -91,8 +91,7 @@ class DrinkFragment : Fragment() {
         // id, if id == -1 return random, else return actual value
 
 
-        viewModel.getDrink(drinkId = drinkId).observe(viewLifecycleOwner, Observer { drinkList ->
-            for (drink in drinkList.drinkList) {
+        viewModel.getDrink(drinkId = drinkId).observe(viewLifecycleOwner, Observer { drink ->
 
                 mBinding.cocktailTitle.text = drink.name
 
@@ -104,7 +103,6 @@ class DrinkFragment : Fragment() {
 
                 mBinding.instructions.text = drink.getParsedInstruction()
 
-            }
         })
     }
 
