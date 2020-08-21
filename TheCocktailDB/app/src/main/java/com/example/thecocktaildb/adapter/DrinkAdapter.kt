@@ -37,9 +37,14 @@ class DrinkAdapter() : RecyclerView.Adapter<DrinkAdapter.DrinkHolder>(){
     }
 
     fun setDrinks(drinkList: List<Drink>){
-        this.drinkList = drinkList
 
-        this.notifyDataSetChanged()
+        updateDrinks(drinkList)
+
+        notifyDataSetChanged()
+    }
+
+    private fun updateDrinks(drinkList: List<Drink>){
+        this.drinkList = drinkList
     }
 
     override fun onBindViewHolder(holder: DrinkHolder, position: Int) {
@@ -60,7 +65,15 @@ class DrinkAdapter() : RecyclerView.Adapter<DrinkAdapter.DrinkHolder>(){
         }
 
         fun bind(image: String, name: String){
+            setImage(image)
+            setName(name)
+        }
+
+        private fun setImage(image:String){
             Picasso.get().load(image).into(binding.image)
+        }
+
+        private fun setName(name: String){
             binding.name.text = name
         }
 

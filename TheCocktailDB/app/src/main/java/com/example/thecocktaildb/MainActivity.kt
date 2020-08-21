@@ -14,10 +14,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupDataBinding()
-        setUpBottonNavigation()
+        setUpBottomNavigation()
     }
 
-    private fun setUpBottonNavigation() {
+    private fun setUpBottomNavigation() {
         NavigationUI.setupWithNavController(
             mBinding.bottomNavigation,
             Navigation.findNavController(this, R.id.nav_host_fragment)

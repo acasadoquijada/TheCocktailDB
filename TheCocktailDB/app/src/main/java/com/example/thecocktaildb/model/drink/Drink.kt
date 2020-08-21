@@ -129,7 +129,7 @@ class Drink{
 
     fun getIngredients() : MutableList<Ingredient>{
 
-        val ingredientList: MutableList<Ingredient> = mutableListOf()
+        val ingredientList: MutableList<Ingredient> = ArrayList()
 
         ingredient1?.let { measure1?.let{it1 ->
             ingredientList.add(Ingredient(it,it1)) } }
@@ -179,12 +179,10 @@ class Drink{
         ingredient15?.let { measure15?.let { it1 ->
             ingredientList.add(Ingredient(it,it1)) } }
 
-        Log.d("TESTING", "ingredientList size: ${ingredientList.size}")
         return ingredientList
     }
 
     fun getParsedInstruction() : String? {
-
         return instruction?.replace(".",".\n\n")
     }
 }

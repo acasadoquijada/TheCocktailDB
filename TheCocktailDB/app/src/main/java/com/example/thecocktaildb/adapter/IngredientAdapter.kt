@@ -26,8 +26,12 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
     }
 
     fun setIngredients(ingredientList: List<Ingredient>){
+        updateIngredients(ingredientList)
+        notifyDataSetChanged()
+    }
+
+    private fun updateIngredients(ingredientList: List<Ingredient>){
         this.ingredientList = ingredientList
-        this.notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: IngredientHolder, position: Int) {
@@ -50,8 +54,17 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
         }
 
         fun bind(name: String, measure:String){
+            setName(name)
+            setMeasure(measure)
+        }
+
+        private fun setName(name: String){
             binding.name.text = name
+        }
+
+        private fun setMeasure(measure: String){
             binding.measure.text = measure
+
         }
     }
 

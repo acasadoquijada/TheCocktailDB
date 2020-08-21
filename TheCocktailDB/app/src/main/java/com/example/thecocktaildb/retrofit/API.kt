@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-public interface API{
+interface API{
 
     @GET("random.php")
     fun getRandomCocktail(): Call<DrinkList>
@@ -18,11 +18,6 @@ public interface API{
     @GET("list.php?g=list")
     fun getGlasses(): Call<GlassList>
 
-    /*
-    http://service.com/movies/list?movie_lang=hindi
-    @GET("http://service.com/movies/list")
-Single<JsonElement> getMovieList(@Query("movie_lang") String userLanguage);
-     */
     @GET("lookup.php")
     fun getDrink(@Query("i") id: Long):Call<DrinkList>
 
@@ -31,7 +26,6 @@ Single<JsonElement> getMovieList(@Query("movie_lang") String userLanguage);
 
     @GET("filter.php?a=Non_Alcoholic")
     fun getNonAlcoholicDrinks(): Call<DrinkList>
-
 
     @GET("filter.php?c=Ordinary_Drink")
     fun getOrdinaryDrinks(): Call<DrinkList>
