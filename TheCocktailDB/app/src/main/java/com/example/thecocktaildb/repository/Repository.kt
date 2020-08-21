@@ -1,6 +1,5 @@
 package com.example.thecocktaildb.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
@@ -12,18 +11,26 @@ import retrofit2.Response
 
 class Repository() {
 
-    private lateinit var randomDrink: MutableLiveData<Drink>
+    private var randomDrink: MutableLiveData<Drink> = MutableLiveData()
 
     private var drinkList: MutableLiveData<List<Drink>> = MutableLiveData()
 
     private val mainController: MainController = MainController()
 
-    fun getDrinkPosition(position: Int): Long{
+    fun getDrinkId(position: Int): Long{
 
-        drinkList.value?.get(position)?.let {
-            return it.id
+        // This needs to improve
+        val size: Int = drinkList.value?.size ?: -1
+
+        if(size <= position){
+            return -1
+        } else {
+            drinkList.value?.get(position)?.let {
+                return it.id
+            }
+            return -1
         }
-        return -1
+
     }
 
     fun getRandomCocktail(new:Boolean): MutableLiveData<Drink> {

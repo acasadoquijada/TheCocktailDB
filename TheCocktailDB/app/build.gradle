@@ -62,4 +62,10 @@ dependencies {
 
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Testing
+    debugImplementation 'androidx.test:rules:1.2.0'
+    debugImplementation "androidx.arch.core:core-testing:2.1.0"
+
+
 }
