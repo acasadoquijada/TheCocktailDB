@@ -15,12 +15,12 @@ import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.DrinkListFragmentBinding
 import com.example.thecocktaildb.model.drink.Drink
-import com.example.thecocktaildb.viewmodel.HomeViewModel
+import com.example.thecocktaildb.viewmodel.ViewModel
 
 class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
 
     lateinit var mBinding : DrinkListFragmentBinding
-    lateinit var viewModel: HomeViewModel
+    lateinit var viewModel: ViewModel
     lateinit var adapter: DrinkAdapter
     lateinit var query: String
 
@@ -95,7 +95,7 @@ class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
     }
 
     private fun getViewModel(){
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ViewModel::class.java)
     }
 
     private fun observeDrinks(){

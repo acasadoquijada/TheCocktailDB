@@ -10,14 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.databinding.FragmentCategoriesBinding
-import com.example.thecocktaildb.viewmodel.HomeViewModel
+import com.example.thecocktaildb.viewmodel.ViewModel
 import kotlinx.android.synthetic.main.category_card_view.view.*
 
 
 class CategoriesFragment : Fragment() {
 
     private lateinit var mBinding : FragmentCategoriesBinding
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: ViewModel
     private var categoryInformation: MutableList<Pair<View,String>> = ArrayList()
 
     override fun onCreateView(
@@ -51,7 +51,7 @@ class CategoriesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ViewModel::class.java)
         setupCategories()
 
     }

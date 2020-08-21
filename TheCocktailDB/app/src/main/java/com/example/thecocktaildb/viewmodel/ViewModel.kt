@@ -6,7 +6,7 @@ import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
 import com.example.thecocktaildb.repository.Repository
 
-class HomeViewModel : ViewModel() {
+class ViewModel : ViewModel() {
 
     private var repository: Repository = Repository()
 

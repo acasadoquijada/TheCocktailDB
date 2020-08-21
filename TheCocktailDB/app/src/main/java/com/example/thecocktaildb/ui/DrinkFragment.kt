@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.IngredientAdapter
 import com.example.thecocktaildb.databinding.DrinkFragmentBinding
-import com.example.thecocktaildb.viewmodel.HomeViewModel
+import com.example.thecocktaildb.viewmodel.ViewModel
 import com.squareup.picasso.Picasso
 
 class DrinkFragment : Fragment() {
@@ -21,7 +21,7 @@ class DrinkFragment : Fragment() {
         fun newInstance() = DrinkFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: ViewModel
     private lateinit var mBinding: DrinkFragmentBinding
     private var drinkId: Long = -1
 
@@ -85,7 +85,7 @@ class DrinkFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
         // getCocktail two arguments, getNewRandom = true/false (default true)
         // id, if id == -1 return random, else return actual value
