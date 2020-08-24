@@ -5,7 +5,7 @@ import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.repository.Repository
 import getOrAwaitValue
 import junit.framework.Assert
-import junit.framework.Assert.assertEquals
+import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,14 +25,6 @@ class RepositoryUnitTest{
     fun setup() {
         repository = Repository()
     }
-/*
-    @Test
-    fun drinkIsNotifiedWithRandomCocktail(){
-        val drink = Drink()
-        repository.getDrink(1177).value = drink
-        assertEquals(repository.getRandomCocktail(false).getOrAwaitValue(), drink)
-    }*/
-
 
     @Test
     fun getDrinkIdRetrievesActualPosition() {
@@ -81,5 +73,27 @@ class RepositoryUnitTest{
             repository.getDrinkList(string).value = drinkList
             assertEquals(repository.getDrinkList(string).getOrAwaitValue(), drinkList)
         }
+    }
+
+    // getDrink
+
+    @Test
+    fun getDrinkByIdIsNotifiedCorrectly(){
+
+        val drink = Drink()
+
+        repository.getDrink(10).value = drink
+
+        assertEquals(repository.getDrink(10).getOrAwaitValue(),drink)
+    }
+
+    @Test
+    fun getDrinkRandomIsNotifiedCorrectly(){
+
+        val drink = Drink()
+
+        repository.getDrink(-1L).value = drink
+
+        assertEquals(repository.getDrink(-1L).getOrAwaitValue(),drink)
     }
 }

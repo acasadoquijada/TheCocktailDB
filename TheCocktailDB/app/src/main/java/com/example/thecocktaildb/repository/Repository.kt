@@ -62,28 +62,17 @@ class Repository() {
     fun getDrink(id: Long): MutableLiveData<Drink>{
 
         return if(id == -1L){
-            getRandomCocktail()
+            getRandomDrink()
         } else{
             getDrinkById(id)
         }
     }
 
 
-    private fun getRandomCocktail(): MutableLiveData<Drink> {
+    private fun getRandomDrink(): MutableLiveData<Drink> {
 
         if(drink.value == null){
-            mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
-
-                override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                    if(response.isSuccessful){
-                        drink.postValue(response.body()?.list?.get(0))
-                    }
-                }
-
-                override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                    drink.postValue(Drink())
-                }
-            })
+            updateRandomDrink()
         }
 
         return drink
