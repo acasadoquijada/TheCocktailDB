@@ -11,7 +11,7 @@ import retrofit2.Response
 
 class Repository() {
 
-    private var randomDrink: MutableLiveData<Drink> = MutableLiveData()
+    private var drink: MutableLiveData<Drink> = MutableLiveData()
 
     private var drinkList: MutableLiveData<List<Drink>> = MutableLiveData()
 
@@ -19,38 +19,16 @@ class Repository() {
 
     fun getDrinkId(position: Int): Long{
 
-        // This needs to improve
-        val size: Int = drinkList.value?.size ?: -1
+        var id: Long = -1
 
-        if(size <= position){
-            return -1
-        } else {
+        val test = drinkList.value?.get(position)
+        if(drinkList.value?.get(position) != null){
             drinkList.value?.get(position)?.let {
-                return it.id
+                id = it.id
             }
-            return -1
         }
 
-    }
-
-    fun getRandomCocktail(new:Boolean): MutableLiveData<Drink> {
-
-        if(new || randomDrink.value == null){
-            mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
-
-                override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                    if(response.isSuccessful){
-                        randomDrink.postValue(response.body()?.list?.get(0))
-                    }
-                }
-
-                override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                    randomDrink.postValue(Drink())
-                }
-            })
-        }
-
-        return randomDrink
+        return id
     }
 
     fun getDrinkList(query: String) : MutableLiveData<List<Drink>>{
@@ -83,19 +61,63 @@ class Repository() {
 
     fun getDrink(id: Long): MutableLiveData<Drink>{
 
-            mainController.getDrink(id).enqueue(object : Callback<DrinkList?> {
+        return if(id == -1L){
+            getRandomCocktail()
+        } else{
+            getDrinkById(id)
+        }
+    }
+
+
+    private fun getRandomCocktail(): MutableLiveData<Drink> {
+
+        if(drink.value == null){
+            mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
 
                 override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                     if(response.isSuccessful){
-                        randomDrink.postValue(response.body()?.list?.get(0))
+                        drink.postValue(response.body()?.list?.get(0))
                     }
                 }
 
                 override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                    t.printStackTrace()
+                    drink.postValue(Drink())
                 }
             })
+        }
 
-        return randomDrink
+        return drink
+    }
+
+    private fun getDrinkById(id: Long): MutableLiveData<Drink>{
+        mainController.getDrink(id).enqueue(object : Callback<DrinkList?> {
+
+            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+                if(response.isSuccessful){
+                    drink.postValue(response.body()?.list?.get(0))
+                }
+            }
+
+            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+
+        return drink
+    }
+
+    fun updateRandomDrink(){
+        mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
+
+            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+                if(response.isSuccessful){
+                    drink.postValue(response.body()?.list?.get(0))
+                }
+            }
+
+            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+                drink.postValue(Drink())
+            }
+        })
     }
 }

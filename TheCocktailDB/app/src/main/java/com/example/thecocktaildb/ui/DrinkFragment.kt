@@ -1,6 +1,7 @@
 package com.example.thecocktaildb.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -23,7 +24,7 @@ class DrinkFragment : Fragment() {
 
     private lateinit var viewModel: ViewModel
     private lateinit var mBinding: DrinkFragmentBinding
-    private var drinkId: Long = -1
+    private var drinkId: Long = -1L
 
     private lateinit var adapter: IngredientAdapter
 
@@ -31,8 +32,6 @@ class DrinkFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Check if I have arguments
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.drink_fragment,container,false)
         getDrinkId()
@@ -42,12 +41,9 @@ class DrinkFragment : Fragment() {
 
 
     private fun getDrinkId() {
-
         arguments?.let {
             drinkId =  DrinkFragmentArgs.fromBundle(requireArguments()).drinkId
         }
-
-
     }
 
     private fun setupRecyclerView(){
@@ -87,10 +83,6 @@ class DrinkFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
-        // getCocktail two arguments, getNewRandom = true/false (default true)
-        // id, if id == -1 return random, else return actual value
-
-
         viewModel.getDrink(drinkId = drinkId).observe(viewLifecycleOwner, Observer { drink ->
 
                 mBinding.cocktailTitle.text = drink.name
@@ -108,7 +100,14 @@ class DrinkFragment : Fragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.random_menu, menu);
+
+        if(drinkId == -1L){
+            inflater.inflate(R.menu.random_and_share_menu, menu);
+
+        } else{
+            inflater.inflate(R.menu.share_menu, menu);
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -118,18 +117,16 @@ class DrinkFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when(item.itemId){
             R.id.action_random -> getRandomCocktail()
             R.id.action_share -> shareCocktail()
-
         }
 
         return super.onOptionsItemSelected(item)
     }
 
     private fun getRandomCocktail(): Boolean{
-        viewModel.getDrink(newCocktail = true)
+        viewModel.updateRandomDrink()
         return true
     }
 

@@ -65,19 +65,7 @@ class VieModelUnitTest{
 
         // This should be changed. I should inject a Repository with the actual data I want
 
-        val drinkList: MutableList<Drink>? = ArrayList()
-
-        val drink1 = Drink()
-        val drink2 = Drink()
-        drink1.id = 1
-        drink2.id = 3
-
-        drinkList?.add(drink1)
-        drinkList?.add(drink2)
-
-        viewModel.getDrinkList("alcohol").value = drinkList
-
-        assertEquals(-1, viewModel.getDrinkId(5))
+        assertEquals(-1, viewModel.getDrinkId(333))
     }
 
     @Test

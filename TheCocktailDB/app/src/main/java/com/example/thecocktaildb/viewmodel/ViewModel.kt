@@ -1,5 +1,6 @@
 package com.example.thecocktaildb.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.thecocktaildb.model.drink.Drink
@@ -13,16 +14,15 @@ class ViewModel : ViewModel() {
         return repository.getDrinkList(query)
     }
 
-    fun getDrink(newCocktail: Boolean = false, drinkId: Long = -1L): MutableLiveData<Drink>{
-
-        if(drinkId != -1L){
-            return repository.getDrink(drinkId)
-        }
-
-        return repository.getRandomCocktail(newCocktail)
+    fun getDrink(drinkId: Long = -1L): MutableLiveData<Drink>{
+        return repository.getDrink(drinkId)
     }
 
     fun getDrinkId(position: Int): Long{
         return repository.getDrinkId(position)
+    }
+
+    fun updateRandomDrink(){
+        repository.updateRandomDrink()
     }
 }

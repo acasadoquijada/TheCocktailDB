@@ -26,9 +26,6 @@ class CategoriesFragment : Fragment() {
     ): View? {
 
         setupDatabinding(inflater, container)
-      //  setupCategories()
-
-
         setupCategories()
         return getRootView()
     }
