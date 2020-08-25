@@ -17,17 +17,16 @@ import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.FragmentCategoriesBinding
 import com.example.thecocktaildb.model.drink.Drink
+import com.example.thecocktaildb.ui.util.DataBindingAbstractFragment
 import com.example.thecocktaildb.viewmodel.ViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.category_card_view.view.*
 
 
-class CategoriesFragment : Fragment() {
+class CategoriesFragment : DataBindingAbstractFragment() {
 
     private lateinit var mBinding : FragmentCategoriesBinding
-    private lateinit var viewModel: ViewModel
     private var categoryInformation: MutableList<Pair<View,String>> = ArrayList()
-    private lateinit var adapter: DrinkAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +38,11 @@ class CategoriesFragment : Fragment() {
         return getRootView()
     }
 
-    private fun setupDatabinding(inflater: LayoutInflater, container: ViewGroup?){
+    override fun setupDatabinding(inflater: LayoutInflater, container: ViewGroup?){
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_categories,container,false)
     }
 
-    private fun getRootView():View{
+    override fun getRootView():View{
         return mBinding.root
     }
 
@@ -57,7 +56,6 @@ class CategoriesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ViewModel::class.java)
         setupCategories()
     }
 
@@ -102,8 +100,6 @@ class CategoriesFragment : Fragment() {
         val searchItem: MenuItem? = menu.findItem(R.id.action_search)
 
         val searchView: SearchView? = searchItem?.actionView as SearchView
-
-
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

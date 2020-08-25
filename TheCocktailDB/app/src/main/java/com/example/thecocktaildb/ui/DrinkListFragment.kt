@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,10 +17,11 @@ import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.DrinkListFragmentBinding
 import com.example.thecocktaildb.model.drink.Drink
+import com.example.thecocktaildb.ui.util.ViewModelAbstractFragment
 import com.example.thecocktaildb.viewmodel.ViewModel
 
 
-class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
+class DrinkListFragment : ViewModelAbstractFragment(), DrinkAdapter.ItemClickListener {
 
     lateinit var mBinding : DrinkListFragmentBinding
     lateinit var viewModel: ViewModel
@@ -69,11 +71,11 @@ class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
     }
 
 
-    private fun setupDatabinding(inflater: LayoutInflater, container: ViewGroup?){
+    override fun setupDatabinding(inflater: LayoutInflater, container: ViewGroup?){
         mBinding = DataBindingUtil.inflate(inflater, R.layout.drink_list_fragment,container,false)
     }
 
-    private fun getRootView(): View {
+    override fun getRootView(): View {
         return mBinding.root
     }
 
@@ -96,7 +98,7 @@ class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
         observeDrinks()
     }
 
-    private fun getViewModel(){
+    override fun getViewModel(){
         viewModel = ViewModelProvider(this).get(ViewModel::class.java)
     }
 

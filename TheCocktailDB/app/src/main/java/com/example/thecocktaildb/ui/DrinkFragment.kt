@@ -13,18 +13,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.IngredientAdapter
 import com.example.thecocktaildb.databinding.DrinkFragmentBinding
+import com.example.thecocktaildb.model.Ingredient
+import com.example.thecocktaildb.model.drink.Drink
+import com.example.thecocktaildb.ui.util.DataBindingAbstractFragment
+import com.example.thecocktaildb.ui.util.ViewModelAbstractFragment
 import com.example.thecocktaildb.viewmodel.ViewModel
 import com.squareup.picasso.Picasso
 
-class DrinkFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = DrinkFragment()
-    }
+class DrinkFragment : ViewModelAbstractFragment() {
 
     private lateinit var viewModel: ViewModel
     private lateinit var mBinding: DrinkFragmentBinding
-    private var drinkId: Long = -1L
+    private val defaultDrinkId = -1L
+    private var drinkId: Long = defaultDrinkId
 
     private lateinit var adapter: IngredientAdapter
 
@@ -33,12 +34,23 @@ class DrinkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.drink_fragment,container,false)
+        setupDatabinding(inflater, container)
         getDrinkId()
         setupRecyclerView()
+        return getRootView()
+    }
+
+    override fun setupDatabinding(inflater: LayoutInflater, container: ViewGroup?) {
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.drink_fragment,container,false)
+    }
+
+    override fun getRootView(): View {
         return mBinding.root
     }
 
+    override fun getViewModel() {
+        viewModel = ViewModelProvider(this).get(ViewModel::class.java)
+    }
 
     private fun getDrinkId() {
         arguments?.let {
@@ -79,29 +91,70 @@ class DrinkFragment : Fragment() {
         return mBinding.ingredientRecyclerView
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        setupViewModel()
+    }
 
-        viewModel.getDrink(drinkId = drinkId).observe(viewLifecycleOwner, Observer { drink ->
+    private fun setupViewModel(){
+        getViewModel()
+        observeDrink()
+    }
 
-                mBinding.cocktailTitle.text = drink.name
-
-                Picasso.get().load(drink.image).into(mBinding.cocktailImage)
-
-                adapter.setIngredients(drink.getIngredients())
-
-                mBinding.typeAndGlass.text = drink.category + " - " +  drink.glass
-
-                mBinding.instructions.text = drink.getParsedInstruction()
-
+    private fun observeDrink(){
+        viewModel.getDrink(drinkId).observe(viewLifecycleOwner, Observer { drink ->
+            setupDrinksAndUI(drink)
         })
+    }
+
+    private fun setupDrinksAndUI(drink: Drink){
+        setupDrinksInAdapter(drink.getIngredients())
+        setupUI(drink)
+    }
+
+    private fun setupUI(drink: Drink){
+        setDrinkName(drink.name)
+        setDrinkImage(drink.image)
+        setDrinkTypeAndGlass(drink.category, drink.glass)
+        setDrinkInstructions(drink.getParsedInstruction())
+    }
+
+    private fun setDrinkName(name: String?){
+        name?.let {
+            mBinding.cocktailTitle.text = name
+        }
+    }
+
+    private fun setDrinkImage(image: String?){
+        image?.let{
+            Picasso.get().load(image).into(mBinding.cocktailImage)
+        }
+    }
+
+    private fun setDrinkTypeAndGlass(category: String?, glass: String?) {
+
+        category?.let {
+            glass?.let { it1 ->
+                mBinding.typeAndGlass.text = it1 + " - " + it
+            }
+        }
+    }
+
+    private fun setDrinkInstructions(instructions: String?){
+        instructions?.let {
+            mBinding.instructions.text = instructions
+        }
+    }
+
+    private fun setupDrinksInAdapter(ingredientList: List<Ingredient>){
+        adapter.setIngredients(ingredientList)
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
-        if(drinkId == -1L){
+        if(isDrinkIdDefault()){
             inflater.inflate(R.menu.random_and_share_menu, menu);
 
         } else{
@@ -109,6 +162,10 @@ class DrinkFragment : Fragment() {
         }
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun isDrinkIdDefault(): Boolean{
+        return drinkId == defaultDrinkId
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
