@@ -1,24 +1,33 @@
 package com.example.thecocktaildb.ui
 
+import android.opengl.Visibility
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.R
+import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.FragmentCategoriesBinding
+import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.viewmodel.ViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.category_card_view.view.*
 
 
-class CategoriesFragment : Fragment() {
+class CategoriesFragment : Fragment(), DrinkAdapter.ItemClickListener {
 
     private lateinit var mBinding : FragmentCategoriesBinding
     private lateinit var viewModel: ViewModel
     private var categoryInformation: MutableList<Pair<View,String>> = ArrayList()
+    private lateinit var adapter: DrinkAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +35,7 @@ class CategoriesFragment : Fragment() {
     ): View? {
 
         setupDatabinding(inflater, container)
+        setupRecyclerView()
         setupCategories()
         return getRootView()
     }
@@ -50,8 +60,8 @@ class CategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ViewModel::class.java)
         setupCategories()
-
     }
+
 
     private fun setupCategories(){
         setCategoryInformation()
@@ -85,4 +95,90 @@ class CategoriesFragment : Fragment() {
             navigateToDrinkListFragment(name)
         }
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+
+        val searchItem: MenuItem? = menu.findItem(R.id.action_search)
+
+        val searchView: SearchView? = searchItem?.actionView as SearchView
+
+
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                if (!searchView.isIconified) {
+                    searchView.isIconified = true
+                }
+             //   searchView.clearFocus();
+
+                searchItem.collapseActionView()
+
+                navigateToDrinkListFragment(query)
+
+
+                return false
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+
+                return false
+            }
+
+        })
+
+
+        searchView?.setOnSearchClickListener {
+            mBinding.categoriesGridLayout.visibility = View.INVISIBLE
+        }
+
+
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun setupRecyclerView(){
+        setupLayoutManager()
+        setupAdapter()
+    }
+
+    private fun setupLayoutManager(){
+        getRecyclerView().layoutManager = createGridLayoutManager()
+
+    }
+
+    private fun createGridLayoutManager(): GridLayoutManager? {
+        val manager = GridLayoutManager(context, 3)
+        manager.orientation = RecyclerView.VERTICAL
+        return manager
+    }
+
+    private fun setupAdapter(){
+        createAdapter()
+        setAdapter()
+    }
+
+    private fun createAdapter(){
+        adapter = DrinkAdapter(this)
+    }
+
+    private fun setAdapter(){
+        getRecyclerView().adapter = adapter
+    }
+
+    private fun getRecyclerView(): RecyclerView {
+        return mBinding.resultRecyclerView
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onItemClick(clickedItem: Int) {
+        TODO("Not yet implemented")
+    }
+
 }

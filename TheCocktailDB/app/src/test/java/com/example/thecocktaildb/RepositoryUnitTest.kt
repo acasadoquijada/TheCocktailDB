@@ -68,6 +68,7 @@ class RepositoryUnitTest{
         list.add("cocktail")
         list.add("cocktail glass")
         list.add("champagne flute")
+        list.add("margarita")
 
         for(string: String in list){
             repository.getDrinkList(string).value = drinkList
@@ -96,4 +97,6 @@ class RepositoryUnitTest{
 
         assertEquals(repository.getDrink(-1L).getOrAwaitValue(),drink)
     }
+
+
 }

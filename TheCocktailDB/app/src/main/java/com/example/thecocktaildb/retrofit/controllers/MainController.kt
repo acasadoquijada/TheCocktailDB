@@ -65,6 +65,8 @@ class MainController {
         return api.getDrink(id)
     }
 
-
+    fun searchDrinkByName(name: String): Call<DrinkList>{
+        return api.searchDrinkByName(name)
+    }
 
 }

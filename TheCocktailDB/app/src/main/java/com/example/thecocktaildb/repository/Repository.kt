@@ -1,5 +1,6 @@
 package com.example.thecocktaildb.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
@@ -33,6 +34,7 @@ class Repository() {
 
     fun getDrinkList(query: String) : MutableLiveData<List<Drink>>{
 
+
         val callback: Call<DrinkList> = when(query){
             "alcohol" -> mainController.getAlcoholicDrinksCall()
             "no alcohol" -> mainController.getNonAlcoholicDrinks()
@@ -40,7 +42,7 @@ class Repository() {
             "cocktail" -> mainController.getCocktailsDrinks()
             "cocktail glass" -> mainController.getCocktailGlassDrinks()
             "champagne flute" -> mainController.getChampagneFluteDrinks()
-            else ->  throw IllegalArgumentException("Value $query is incorrect")
+            else -> return searchDrink(query)
         }
 
         callback.enqueue(object: Callback<DrinkList?>{
@@ -108,5 +110,22 @@ class Repository() {
                 drink.postValue(Drink())
             }
         })
+    }
+
+    fun searchDrink(name: String): MutableLiveData<List<Drink>>{
+        mainController.searchDrinkByName(name).enqueue(object : Callback<DrinkList?> {
+
+            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+                if(response.isSuccessful){
+                    drinkList.postValue(response.body()?.list)
+                }
+            }
+
+            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+                drinkList.postValue(null) // I should throw an exception
+            }
+        })
+
+        return drinkList
     }
 }

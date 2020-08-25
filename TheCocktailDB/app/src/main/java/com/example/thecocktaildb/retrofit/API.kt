@@ -38,4 +38,7 @@ interface API{
 
     @GET("filter.php?g=Champagne_flute")
     fun getChampagneFluteDrinks(): Call<DrinkList>
+
+    @GET("search.php")
+    fun searchDrinkByName(@Query("s") name: String): Call<DrinkList>
 }

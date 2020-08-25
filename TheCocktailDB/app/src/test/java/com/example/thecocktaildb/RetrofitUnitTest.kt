@@ -188,7 +188,6 @@ class RetrofitUnitTest{
 
     @Test
     fun getDrinkById(){
-
         try{
 
             val id: Long = 11007
@@ -200,6 +199,25 @@ class RetrofitUnitTest{
             val drinkList = response.body()
 
             assertNameIsCorrect(drinkList)
+
+        } catch (e:IOException) {
+            failTest(e)
+        }
+    }
+
+    @Test
+    fun searchDrinkByName(){
+        try{
+
+            val name = "margarita"
+
+            val response: Response<DrinkList> = mainController.searchDrinkByName(name).execute()
+
+            assertResponseIsTrue(response)
+
+            val drinkList = response.body()
+
+            assertDrinkIsNotEmpty(drinkList)
 
         } catch (e:IOException) {
             failTest(e)
