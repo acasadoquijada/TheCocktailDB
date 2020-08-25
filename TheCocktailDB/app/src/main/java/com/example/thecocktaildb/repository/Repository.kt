@@ -112,16 +112,22 @@ class Repository() {
         })
     }
 
-    fun searchDrink(name: String): MutableLiveData<List<Drink>>{
+    private fun searchDrink(name: String): MutableLiveData<List<Drink>>{
         mainController.searchDrinkByName(name).enqueue(object : Callback<DrinkList?> {
 
             override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
                 if(response.isSuccessful){
-                    drinkList.postValue(response.body()?.list)
+                    if(response.body()?.list?.isNullOrEmpty() == false){
+                        drinkList.postValue(response.body()?.list)
+                    } else{
+                        drinkList.postValue(ArrayList())
+                    }
                 }
             }
 
             override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+                Log.d("TESTING__","empty call")
+
                 drinkList.postValue(null) // I should throw an exception
             }
         })

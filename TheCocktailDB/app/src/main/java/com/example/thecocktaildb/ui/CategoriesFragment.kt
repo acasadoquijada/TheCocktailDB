@@ -22,7 +22,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.category_card_view.view.*
 
 
-class CategoriesFragment : Fragment(), DrinkAdapter.ItemClickListener {
+class CategoriesFragment : Fragment() {
 
     private lateinit var mBinding : FragmentCategoriesBinding
     private lateinit var viewModel: ViewModel
@@ -35,7 +35,6 @@ class CategoriesFragment : Fragment(), DrinkAdapter.ItemClickListener {
     ): View? {
 
         setupDatabinding(inflater, container)
-        setupRecyclerView()
         setupCategories()
         return getRootView()
     }
@@ -112,7 +111,8 @@ class CategoriesFragment : Fragment(), DrinkAdapter.ItemClickListener {
                 if (!searchView.isIconified) {
                     searchView.isIconified = true
                 }
-             //   searchView.clearFocus();
+
+                searchView.clearFocus();
 
                 searchItem.collapseActionView()
 
@@ -134,51 +134,12 @@ class CategoriesFragment : Fragment(), DrinkAdapter.ItemClickListener {
             mBinding.categoriesGridLayout.visibility = View.INVISIBLE
         }
 
-
-
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    private fun setupRecyclerView(){
-        setupLayoutManager()
-        setupAdapter()
-    }
-
-    private fun setupLayoutManager(){
-        getRecyclerView().layoutManager = createGridLayoutManager()
-
-    }
-
-    private fun createGridLayoutManager(): GridLayoutManager? {
-        val manager = GridLayoutManager(context, 3)
-        manager.orientation = RecyclerView.VERTICAL
-        return manager
-    }
-
-    private fun setupAdapter(){
-        createAdapter()
-        setAdapter()
-    }
-
-    private fun createAdapter(){
-        adapter = DrinkAdapter(this)
-    }
-
-    private fun setAdapter(){
-        getRecyclerView().adapter = adapter
-    }
-
-    private fun getRecyclerView(): RecyclerView {
-        return mBinding.resultRecyclerView
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onItemClick(clickedItem: Int) {
-        TODO("Not yet implemented")
     }
 
 }

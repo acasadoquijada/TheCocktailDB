@@ -26,7 +26,4 @@ class ViewModel : ViewModel() {
         repository.updateRandomDrink()
     }
 
-    fun searchDrink(name: String) : MutableLiveData<List<Drink>>{
-        return repository.searchDrink(name)
-    }
 }

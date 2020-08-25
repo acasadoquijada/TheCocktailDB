@@ -1,7 +1,7 @@
 package com.example.thecocktaildb.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +17,7 @@ import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.DrinkListFragmentBinding
 import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.viewmodel.ViewModel
+
 
 class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
 
@@ -79,7 +80,7 @@ class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
 
     private fun getQuery() {
         arguments?.let {
-            query =  DrinkListFragmentArgs.fromBundle(requireArguments()).query
+            query = DrinkListFragmentArgs.fromBundle(requireArguments()).query
         }
     }
 
@@ -101,13 +102,33 @@ class DrinkListFragment : Fragment(), DrinkAdapter.ItemClickListener {
 
     private fun observeDrinks(){
         viewModel.getDrinkList(query).observe(viewLifecycleOwner, Observer { drinkList ->
-            setDrinks(drinkList)
+            checkDrinks(drinkList)
         })
+    }
+
+    private fun checkDrinks(drinkList: List<Drink>){
+        if(drinkList.isEmpty()){
+            showAlertDialog()
+        } else {
+            setDrinks(drinkList)
+        }
+    }
+
+    private fun showAlertDialog(){
+        AlertDialog.Builder(context)
+            .setTitle("No results")
+            .setMessage("There are not drinks containing $query")
+            .setPositiveButton(
+                android.R.string.ok
+            ) { _, _ ->
+                requireActivity().onBackPressed()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     private fun setDrinks(drinkList: List<Drink>){
         adapter.setDrinks(drinkList)
-
     }
 
     private fun navigateToDrinkFragment(drinkId: Long){
