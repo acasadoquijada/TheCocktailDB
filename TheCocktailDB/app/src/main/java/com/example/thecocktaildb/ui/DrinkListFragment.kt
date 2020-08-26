@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -18,10 +16,11 @@ import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.DrinkListFragmentBinding
 import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.ui.util.ViewModelAbstractFragment
+import com.example.thecocktaildb.ui.util.OnClickElementInterface
 import com.example.thecocktaildb.viewmodel.ViewModel
 
 
-class DrinkListFragment : ViewModelAbstractFragment(), DrinkAdapter.ItemClickListener {
+class DrinkListFragment : ViewModelAbstractFragment(), OnClickElementInterface {
 
     lateinit var mBinding : DrinkListFragmentBinding
     lateinit var viewModel: ViewModel

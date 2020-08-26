@@ -35,13 +35,7 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
     }
 
     override fun onBindViewHolder(holder: IngredientHolder, position: Int) {
-
-        ingredientList[position].name?.let {
-            ingredientList[position].measure?.let { it1 ->
-            holder.bind(it,
-                it1
-            )
-        } }
+        holder.bind(ingredientList[position].name, ingredientList[position].measure)
     }
 
 

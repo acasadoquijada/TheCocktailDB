@@ -1,26 +1,21 @@
 package com.example.thecocktaildb.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.databinding.DrinkInListBinding
 import com.example.thecocktaildb.model.drink.Drink
-import com.example.thecocktaildb.ui.DrinkListFragment
+import com.example.thecocktaildb.ui.util.OnClickElementInterface
 import com.squareup.picasso.Picasso
 
 class DrinkAdapter() : RecyclerView.Adapter<DrinkAdapter.DrinkHolder>(){
 
     var drinkList: List<Drink> = ArrayList()
-    lateinit var mItemClickListener: ItemClickListener
+    lateinit var mItemClickListener: OnClickElementInterface
 
-    constructor(mItemClickListener: ItemClickListener) : this() {
+    constructor(mItemClickListener: OnClickElementInterface) : this() {
         this.mItemClickListener = mItemClickListener
-    }
-
-    interface ItemClickListener{
-        fun onItemClick(clickedItem: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrinkHolder {
@@ -45,6 +40,7 @@ class DrinkAdapter() : RecyclerView.Adapter<DrinkAdapter.DrinkHolder>(){
 
     private fun updateDrinks(drinkList: List<Drink>){
         this.drinkList = drinkList
+        this.notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: DrinkHolder, position: Int) {
