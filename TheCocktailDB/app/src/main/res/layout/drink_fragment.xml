@@ -13,6 +13,7 @@
 
     <ImageView
         android:id="@+id/cocktailImage"
+        android:background="@drawable/round_outline"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginStart="8dp"
@@ -26,7 +27,8 @@
 
     <TextView
         android:id="@+id/cocktailTitle"
-        android:textSize="20sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -39,7 +41,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/typeAndGlass"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        tools:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cocktailImage" />
+
+    <TextView
         android:id="@+id/instructions"
+        android:textStyle="bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -64,16 +78,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/instructions" />
-
-    <TextView
-        android:id="@+id/typeAndGlass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cocktailImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

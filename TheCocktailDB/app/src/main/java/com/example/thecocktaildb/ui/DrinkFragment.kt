@@ -1,11 +1,11 @@
 package com.example.thecocktaildb.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,7 +15,6 @@ import com.example.thecocktaildb.adapter.IngredientAdapter
 import com.example.thecocktaildb.databinding.DrinkFragmentBinding
 import com.example.thecocktaildb.model.Ingredient
 import com.example.thecocktaildb.model.drink.Drink
-import com.example.thecocktaildb.ui.util.DataBindingAbstractFragment
 import com.example.thecocktaildb.ui.util.ViewModelAbstractFragment
 import com.example.thecocktaildb.viewmodel.ViewModel
 import com.squareup.picasso.Picasso
@@ -35,6 +34,7 @@ class DrinkFragment : ViewModelAbstractFragment() {
     ): View? {
 
         setupDatabinding(inflater, container)
+        mBinding.cocktailImage.clipToOutline = true // will be changed
         getDrinkId()
         setupRecyclerView()
         return getRootView()
@@ -69,7 +69,7 @@ class DrinkFragment : ViewModelAbstractFragment() {
     }
 
     private fun createGridLayoutManager(): GridLayoutManager? {
-        val manager = GridLayoutManager(context, 1)
+        val manager = GridLayoutManager(context, 2)
         manager.orientation = RecyclerView.VERTICAL
         return manager
     }
@@ -117,7 +117,7 @@ class DrinkFragment : ViewModelAbstractFragment() {
         setDrinkName(drink.name)
         setDrinkImage(drink.image)
         setDrinkTypeAndGlass(drink.category, drink.glass)
-        setDrinkInstructions(drink.getParsedInstruction())
+        setDrinkInstructions(drink.instruction)
     }
 
     private fun setDrinkName(name: String?){
@@ -136,7 +136,8 @@ class DrinkFragment : ViewModelAbstractFragment() {
 
         category?.let {
             glass?.let { it1 ->
-                mBinding.typeAndGlass.text = it1 + " - " + it
+                val typeAndGlass = "$it1 - $it"
+                mBinding.typeAndGlass.text = typeAndGlass
             }
         }
     }
@@ -188,7 +189,7 @@ class DrinkFragment : ViewModelAbstractFragment() {
     }
 
     private fun shareCocktail(): Boolean{
-        Toast.makeText(requireContext(),"TESTING",Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),"This should share drink",Toast.LENGTH_SHORT).show()
         return true
     }
 }
