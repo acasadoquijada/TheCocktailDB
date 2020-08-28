@@ -48,6 +48,10 @@ The application contains JUnit testing for testing the MainController and Reposi
 
 Instrumented testing will be added soon.
 
+## Screenshots
+
+![drink](doc/img/drink.png) ![category_list](doc/img/category_list.png)
+![category_list_selected](doc/img/category_selected.png) ![search](doc/img/search.png)
 ## Libraries
 
 * [Retrofit](https://github.com/square/retrofit)
