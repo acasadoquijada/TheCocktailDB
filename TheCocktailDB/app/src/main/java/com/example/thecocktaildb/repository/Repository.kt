@@ -1,6 +1,5 @@
 package com.example.thecocktaildb.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.model.drink.DrinkList
@@ -18,11 +17,34 @@ class Repository() {
 
     private val mainController: MainController = MainController()
 
+    private val updateDrinkListCallback =  object: Callback<DrinkList?>{
+        override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+            if(response.isSuccessful){
+                updateDrinkList(response.body()?.list)
+            }
+        }
+
+        override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
+    private val updateDrinkCallBack =  object: Callback<DrinkList?>{
+        override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
+            if(response.isSuccessful){
+                updateDrink(response.body()?.list)
+            }
+        }
+
+        override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
     fun getDrinkId(position: Int): Long{
 
         var id: Long = -1
 
-        val test = drinkList.value?.get(position)
         if(drinkList.value?.get(position) != null){
             drinkList.value?.get(position)?.let {
                 id = it.id
@@ -31,6 +53,7 @@ class Repository() {
 
         return id
     }
+
 
     fun getDrinkList(query: String) : MutableLiveData<List<Drink>>{
 
@@ -45,18 +68,7 @@ class Repository() {
             else -> return searchDrink(query)
         }
 
-        callback.enqueue(object: Callback<DrinkList?>{
-            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                if(response.isSuccessful){
-                    drinkList.postValue(response.body()?.list)
-                }
-            }
-
-            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                t.printStackTrace()
-            }
-
-        })
+        callback.enqueue(updateDrinkListCallback)
 
         return drinkList
     }
@@ -81,57 +93,35 @@ class Repository() {
     }
 
     private fun getDrinkById(id: Long): MutableLiveData<Drink>{
-        mainController.getDrink(id).enqueue(object : Callback<DrinkList?> {
-
-            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                if(response.isSuccessful){
-                    drink.postValue(response.body()?.list?.get(0))
-                }
-            }
-
-            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
+        mainController.getDrink(id).enqueue(updateDrinkCallBack)
 
         return drink
     }
 
     fun updateRandomDrink(){
-        mainController.getRandomDrinkCall().enqueue(object : Callback<DrinkList?> {
-
-            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                if(response.isSuccessful){
-                    drink.postValue(response.body()?.list?.get(0))
-                }
-            }
-
-            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                drink.postValue(Drink())
-            }
-        })
+        mainController.getRandomDrinkCall().enqueue(updateDrinkCallBack)
     }
 
     private fun searchDrink(name: String): MutableLiveData<List<Drink>>{
-        mainController.searchDrinkByName(name).enqueue(object : Callback<DrinkList?> {
-
-            override fun onResponse(call: Call<DrinkList?>, response: Response<DrinkList?>) {
-                if(response.isSuccessful){
-                    if(response.body()?.list?.isNullOrEmpty() == false){
-                        drinkList.postValue(response.body()?.list)
-                    } else{
-                        drinkList.postValue(ArrayList())
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<DrinkList?>, t: Throwable) {
-                Log.d("TESTING__","empty call")
-
-                drinkList.postValue(null) // I should throw an exception
-            }
-        })
-
+        mainController.searchDrinkByName(name).enqueue(updateDrinkListCallback)
         return drinkList
     }
+
+    private fun updateDrinkList(drinkList: MutableList<Drink>?){
+
+        if(!drinkList.isNullOrEmpty()){
+            this.drinkList.postValue(drinkList)
+        } else{
+            this.drinkList.postValue(ArrayList())
+        }
+    }
+
+    private fun updateDrink(drinkList: MutableList<Drink>?){
+        if(drinkList?.isNullOrEmpty() == false){
+            this.drink.postValue(drinkList[0])
+        } else{
+            this.drink.postValue(Drink())
+        }
+    }
+
 }
