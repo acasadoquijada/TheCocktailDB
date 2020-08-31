@@ -57,15 +57,23 @@ class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterfac
     private fun setupRecyclerView(){
         setupLayoutManager()
         setupAdapters()
+        addItemDecorationRecyclerView()
     }
 
     private fun setupLayoutManager(){
-        getRecyclerView().layoutManager = createGridLayoutManager()
-        getRecyclerView().addItemDecoration(LayoutMarginDecoration(1, 16))
-
+        createAndSetGridLayoutManager()
     }
 
-    private fun createGridLayoutManager(): GridLayoutManager? {
+    private fun createAndSetGridLayoutManager() {
+        getRecyclerView().layoutManager = createGridLayoutManager()
+        addItemDecorationRecyclerView()
+    }
+
+    private fun addItemDecorationRecyclerView(){
+        getRecyclerView().addItemDecoration(LayoutMarginDecoration(1, 16))
+    }
+
+    private fun createGridLayoutManager() : GridLayoutManager?{
         val manager = GridLayoutManager(context, 1)
         manager.orientation = RecyclerView.VERTICAL
         return manager
