@@ -14,6 +14,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository: Repository = Repository()
     private val categoryList: MutableList<String> = ArrayList()
+    var query: String = ""
 
     init{
         val context = getApplication<Application>().applicationContext
@@ -25,8 +26,13 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         categoryList.add(context.getString(R.string.category_champagne_flute))
     }
 
+
     fun getDrinkList(query: String): MutableLiveData<List<Drink>>{
         return repository.getDrinkList(query)
+    }
+
+    fun getDrinkListSize(): Int{
+        return repository.getDrinkListSize()
     }
 
     fun getDrink(drinkId: Long = -1L): MutableLiveData<Drink>{

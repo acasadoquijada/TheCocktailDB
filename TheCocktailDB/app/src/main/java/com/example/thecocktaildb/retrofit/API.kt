@@ -41,4 +41,7 @@ interface API{
 
     @GET("search.php")
     fun searchDrinkByName(@Query("s") name: String): Call<DrinkList>
+
+    @GET("filter.php")
+    fun searchDrinkByIngredient(@Query("i") ingredient: String): Call<DrinkList>
 }

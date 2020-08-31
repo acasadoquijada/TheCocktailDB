@@ -1,7 +1,5 @@
 package com.example.thecocktaildb.adapter
 
-
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +60,6 @@ class CategoriesAdapter() :
         }
 
         override fun onClick(v: View?) {
-            Log.d("TESTING__", "click cat_adapter: $adapterPosition")
             mItemClickListener.onItemClick(adapterPosition)
         }
     }

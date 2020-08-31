@@ -54,7 +54,14 @@ class Repository() {
         return id
     }
 
+    fun getDrinkListSize(): Int{
 
+        drinkList.value?.let {
+            return it.size
+        }
+
+        return -1
+    }
     fun getDrinkList(query: String) : MutableLiveData<List<Drink>>{
 
 

@@ -14,11 +14,11 @@ import com.example.thecocktaildb.R
 import com.example.thecocktaildb.adapter.CategoriesAdapter
 import com.example.thecocktaildb.adapter.DrinkAdapter
 import com.example.thecocktaildb.databinding.FragmentCategoriesBinding
+import com.example.thecocktaildb.model.drink.Drink
 import com.example.thecocktaildb.ui.util.DataBindingAbstractFragment
 import com.example.thecocktaildb.ui.util.OnClickElementInterface
 import com.example.thecocktaildb.viewmodel.ViewModel
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
-import kotlinx.android.synthetic.main.category_card_view.view.*
 
 
 class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterface {
@@ -27,25 +27,20 @@ class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterfac
     private lateinit var viewModel: ViewModel
     private lateinit var categoryAdapter: CategoriesAdapter
     private lateinit var drinkAdapter: DrinkAdapter
-    private var categoryInformation: MutableList<Pair<View,String>> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         setupDatabinding(inflater, container)
-        setupCategories()
         setupRecyclerView()
 
-        drinkAdapter = DrinkAdapter(this)
         return getRootView()
     }
 
-    override fun onItemClick(clickedItem: Int) {
 
+    override fun onItemClick(clickedItem: Int) {
         if(getRecyclerView().adapter == categoryAdapter){
-            Log.d("TESTING__", "category name: ${viewModel.getCategoryName(clickedItem)}")
             navigateToDrinkListFragment(viewModel.getCategoryName(clickedItem))
         } else{
             navigateToDrinkFragment(viewModel.getDrinkId(clickedItem))
@@ -61,7 +56,7 @@ class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterfac
 
     private fun setupRecyclerView(){
         setupLayoutManager()
-        setupAdapter()
+        setupAdapters()
     }
 
     private fun setupLayoutManager(){
@@ -76,18 +71,15 @@ class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterfac
         return manager
     }
 
-    private fun setupAdapter(){
-        createAdapter()
-        setAdapter()
+    private fun setupAdapters(){
+        createAdapters()
+        setCategoryAdapter()
 
     }
 
-    private fun createAdapter(){
+    private fun createAdapters(){
         categoryAdapter = CategoriesAdapter(this)
-    }
-
-    private fun setAdapter(){
-        getRecyclerView().adapter = categoryAdapter
+        drinkAdapter = DrinkAdapter(this)
     }
 
     private fun setCategoryInformationAdapter(){
@@ -118,48 +110,12 @@ class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterfac
         NavHostFragment.findNavController(this).navigate(action)
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         getViewModel()
         setCategoryInformationAdapter()
-       // setupCategories()
     }
-
-
-    private fun setupCategories(){
-        setCategoryInformation()
-        setCategoryLogic()
-    }
-
-    private fun setCategoryInformation(){
-       /* categoryInformation.add(Pair(mBinding.alcohol.root, getString(R.string.category_alcohol)))
-        categoryInformation.add(Pair(mBinding.nonAlcohol.root, getString(R.string.category_no_alcohol)))
-        categoryInformation.add(Pair(mBinding.ordinaryDrink.root, getString(R.string.category_ordinary_drink)))
-        categoryInformation.add(Pair(mBinding.cocktail.root, getString(R.string.category_cocktail)))
-        categoryInformation.add(Pair(mBinding.cocktailGlass.root, getString(R.string.category_cocktail_glass)))
-        categoryInformation.add(Pair(mBinding.champagneFlute.root, getString(R.string.category_champagne_flute)))*/
-    }
-
-    private fun setCategoryLogic(){
-
-        for (par: Pair<View,String> in categoryInformation){
-            setCategoryName(par.first, par.second)
-            setOnClickListener(par.first, par.second)
-        }
-    }
-
-
-    private fun setCategoryName(view: View, name: String){
-        view.categoryName.text = name
-    }
-
-    private fun setOnClickListener(view: View, name: String){
-        view.setOnClickListener{
-            navigateToDrinkListFragment(name)
-        }
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu);
@@ -168,41 +124,99 @@ class CategoriesFragment : DataBindingAbstractFragment(), OnClickElementInterfac
 
         val searchView: SearchView? = searchItem?.actionView as SearchView
 
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-              //  navigateToDrinkListFragment(query)
-                return false
+        setOnActionExpandListener(searchItem, searchView)
+
+        setOnQueryTextListener(searchView)
+
+    }
+
+    private fun setOnActionExpandListener(searchItem: MenuItem?, searchView: SearchView?){
+
+        searchItem?.setOnActionExpandListener(object: MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                searchView?.isIconified = false
+                searchView?.requestFocusFromTouch()
+                return true
             }
 
-            override fun onQueryTextChange(s: String): Boolean {
-
-                if(s.isEmpty()){
-                    getRecyclerView().adapter = categoryAdapter
-                    val layout = getRecyclerView().layoutManager as GridLayoutManager
-                    layout.spanCount = 1
-                } else{
-                    viewModel.getDrinkList(s).observe(viewLifecycleOwner, Observer {
-                        drinkAdapter.setDrinks(it)
-
-                        // There should be a check here. Dont wanna to re-attach adapters
-                        getRecyclerView().adapter = drinkAdapter
-                        val layout = getRecyclerView().layoutManager as GridLayoutManager
-                        layout.spanCount = 3
-                    })
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                if(viewModel.getDrinkListSize() <= 0){
+                    setCategoryAdapterAndConfig()
                 }
-                return false
+                return true
             }
         })
 
-/*
-        searchView?.setOnSearchClickListener {
-            mBinding.categoriesGridLayout.visibility = View.INVISIBLE
-        }*/
-
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun setOnQueryTextListener(searchView: SearchView?){
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(s: String): Boolean {
+                return handleQueryChange(s) // If this doesn't work add return false below
+            }
+        })
+    }
 
+    private fun handleQueryChange(query: String): Boolean{
+        if (query.isEmpty()) {
+            setCategoryAdapterAndConfig()
+        } else {
+            setDrinkAdapterAndConfig(query)
+        }
+        return false
+    }
+
+    private fun setCategoryAdapterAndConfig(){
+        setCategoryAdapter()
+        setCategoryAdapterSettings()
+    }
+
+    private fun setCategoryAdapter(){
+        getRecyclerView().adapter = categoryAdapter
+    }
+
+    private fun setCategoryAdapterSettings(){
+        setLayoutSpanCount(getLayoutManager(),1)
+
+    }
+
+    private fun setDrinkAdapterAndConfig(query: String){
+
+        if(!currentAdapterIsDrink()){
+            setDrinkAdapter()
+            setDrinkAdapterSettings()
+        }
+        viewModel.getDrinkList(query).observe(viewLifecycleOwner, Observer {
+            updateDrinkAdapterDrinkList(it)
+        })
+    }
+
+    private fun setDrinkAdapter(){
+        getRecyclerView().adapter = drinkAdapter
+    }
+
+    private fun setDrinkAdapterSettings(){
+        setLayoutSpanCount(getLayoutManager(),3)
+    }
+
+    private fun currentAdapterIsDrink(): Boolean{
+        return getRecyclerView().adapter == drinkAdapter
+    }
+
+    private fun updateDrinkAdapterDrinkList(drinkList: List<Drink>){
+        drinkAdapter.setDrinks(drinkList)
+    }
+
+    private fun getLayoutManager(): GridLayoutManager{
+        return getRecyclerView().layoutManager as GridLayoutManager
+    }
+
+    private fun setLayoutSpanCount(layout: GridLayoutManager, spanCount: Int){
+        layout.spanCount = spanCount
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

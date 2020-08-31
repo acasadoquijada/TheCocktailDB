@@ -27,9 +27,13 @@ class RepositoryUnitTest{
     }
 
     @Test
+    fun updateRandomDrink(){
+        repository.updateRandomDrink()
+    }
+
+    @Test
     fun getDrinkIdRetrievesActualPosition() {
 
-        // This should be changed. I should inject a Repository with the actual data I want
 
         val drinkList: MutableList<Drink>? = ArrayList()
 
@@ -49,12 +53,11 @@ class RepositoryUnitTest{
     @Test
     fun getDrinkRetrievesUnrealPosition() {
 
-        // This should be changed. I should inject a Repository with the actual data I want
-
         repository.getDrinkList("alcohol")
 
         assertEquals(-1, repository.getDrinkId(999999))
     }
+
 
     @Test
     fun drinkListIsNotifiedCorrectly(){
@@ -98,5 +101,24 @@ class RepositoryUnitTest{
         assertEquals(repository.getDrink(-1L).getOrAwaitValue(),drink)
     }
 
+/*
+    @Test
+    fun searchDrinkByIngredient(){
+        try{
 
+            val ingredient = "Gin"
+
+            val response: Response<DrinkList> = mainController.searchDrinkByIngredient(ingredient).execute()
+
+            assertResponseIsTrue(response)
+
+            val drinkList = response.body()
+
+            assertDrinkInCategoryIsNotEmpty(drinkList)
+
+        } catch (e:IOException) {
+            failTest(e)
+        }
+    }
+ */
 }

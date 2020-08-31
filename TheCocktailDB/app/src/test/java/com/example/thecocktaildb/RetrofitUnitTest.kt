@@ -224,4 +224,23 @@ class RetrofitUnitTest{
         }
     }
 
+    @Test
+    fun searchDrinkByIngredient(){
+        try{
+
+            val ingredient = "Gin"
+
+            val response: Response<DrinkList> = mainController.searchDrinkByIngredient(ingredient).execute()
+
+            assertResponseIsTrue(response)
+
+            val drinkList = response.body()
+
+            assertDrinkInCategoryIsNotEmpty(drinkList)
+
+        } catch (e:IOException) {
+            failTest(e)
+        }
+    }
+
 }

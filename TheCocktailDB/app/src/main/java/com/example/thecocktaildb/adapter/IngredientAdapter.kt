@@ -1,9 +1,13 @@
 package com.example.thecocktaildb.adapter
 
-import android.util.Log
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thecocktaildb.databinding.IngredientBinding
 import com.example.thecocktaildb.model.Ingredient
@@ -39,28 +43,25 @@ class IngredientAdapter: RecyclerView.Adapter<IngredientAdapter.IngredientHolder
     }
 
 
-    inner class IngredientHolder(binding: IngredientBinding):RecyclerView.ViewHolder(binding.root){
+    inner class IngredientHolder(binding: IngredientBinding):RecyclerView.ViewHolder(binding.root) {
 
-       private val binding:IngredientBinding
+        private val binding: IngredientBinding
 
-        init{
+        init {
             this.binding = binding
         }
 
-        fun bind(name: String, measure:String){
+        fun bind(name: String, measure: String) {
             setName(name)
             setMeasure(measure)
         }
 
-        private fun setName(name: String){
+        private fun setName(name: String) {
             binding.name.text = name
         }
 
-        private fun setMeasure(measure: String){
+        private fun setMeasure(measure: String) {
             binding.measure.text = measure
-
         }
     }
-
-
 }
