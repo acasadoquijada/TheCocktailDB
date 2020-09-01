@@ -1,10 +1,8 @@
 package com.example.thecocktaildb.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,12 +19,13 @@ import com.squareup.picasso.Picasso
 
 class DrinkFragment : ViewModelAbstractFragment() {
 
-    private lateinit var viewModel: ViewModel
-    private lateinit var mBinding: DrinkFragmentBinding
     private val defaultDrinkId = -1L
     private var drinkId: Long = defaultDrinkId
 
+    private lateinit var viewModel: ViewModel
+    private lateinit var mBinding: DrinkFragmentBinding
     private lateinit var adapter: IngredientAdapter
+    private lateinit var drink: Drink
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,6 +104,7 @@ class DrinkFragment : ViewModelAbstractFragment() {
     private fun observeDrink(){
         viewModel.getDrink(drinkId).observe(viewLifecycleOwner, Observer { drink ->
             setupDrinksAndUI(drink)
+            this.drink = drink
         })
     }
 
@@ -188,8 +188,31 @@ class DrinkFragment : ViewModelAbstractFragment() {
         return true
     }
 
-    private fun shareCocktail(): Boolean{
-        Toast.makeText(requireContext(),"This should share drink",Toast.LENGTH_SHORT).show()
-        return true
+    private fun shareCocktail(){
+        val shareIntent = Intent.createChooser(createIntent(), null)
+        startActivity(shareIntent)
+    }
+
+    private fun createIntent(): Intent{
+
+        return Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, drinkToString())
+            type = "text/plain"
+        }
+    }
+
+    private fun drinkToString(): String{
+        return drink.name + "\n\n" +  drink.instruction + "\n\n" + getIngredientsString()
+    }
+
+    private fun getIngredientsString(): String{
+        var ingredientsString = ""
+
+        for(ingredient: Ingredient in drink.getIngredients()){
+            ingredientsString += ingredient.name + " - " + ingredient.measure + "\n"
+        }
+
+        return ingredientsString
     }
 }

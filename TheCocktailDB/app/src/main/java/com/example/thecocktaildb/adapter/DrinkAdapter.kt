@@ -58,6 +58,7 @@ class DrinkAdapter() : RecyclerView.Adapter<DrinkAdapter.DrinkHolder>(){
         init{
             this.binding = binding
             this.binding.root.setOnClickListener(this)
+            this.binding.image.clipToOutline = true
         }
 
         fun bind(image: String, name: String){
